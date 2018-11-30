@@ -1,0 +1,8 @@
+zuul:
+  routes:
+    products:
+      path: /products/**
+      url: http://rvstore-product-api:9001/products
+    orders:
+      path: /orders/**
+      url: http://rvstore-order-api:9002/orders

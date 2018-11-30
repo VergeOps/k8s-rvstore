@@ -1,0 +1,154 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ui-deployment
+  labels:
+    app: ui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ui
+  template:
+    metadata:
+      labels:
+        app: ui
+    spec:
+      containers:
+      - name: ui
+        image: vergeops/k8s-rvstore-ui:1.0
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: product-api-deployment
+  labels:
+    app: product-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: product-api
+  template:
+    metadata:
+      labels:
+        app: product-api
+    spec:
+      containers:
+      - name: rvstore-product-api
+        image: vergeops/k8s-rvstore-product-api:1.0
+        imagePullPolicy: Always
+        env:
+         - name: SPRING_PROFILES_ACTIVE
+           value: "compose"
+        ports:
+        - containerPort: 9001
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-api-deployment
+  labels:
+    app: order-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order-api
+  template:
+    metadata:
+      labels:
+        app: order-api
+    spec:
+      containers:
+      - name: rvstore-order-api
+        image: vergeops/k8s-rvstore-order-api:1.0
+        imagePullPolicy: Always
+        env:
+         - name: SPRING_PROFILES_ACTIVE
+           value: "compose"
+        ports:
+        - containerPort: 9002
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-mongodb-deployment
+  labels:
+    app: order-mongodb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order-mongodb
+  template:
+    metadata:
+      labels:
+        app: order-mongodb
+    spec:
+      containers:
+      - name: rvstore-orders-mongodb
+        image: mongo
+        env:
+         - name: MONGO_INITDB_ROOT_USERNAME
+           value: "mongoadmin"
+         - name: MONGO_INITDB_ROOT_PASSWORD
+           value: "secret"
+        ports:
+        - containerPort: 27017
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-simulator-deployment
+  labels:
+    app: order-simulator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order-simulator
+  template:
+    metadata:
+      labels:
+        app: order-simulator
+    spec:
+      containers:
+      - name: rvstore-order-simulator
+        image: vergeops/k8s-rvstore-order-simulator:1.0
+        imagePullPolicy: Always
+        env:
+         - name: SPRING_PROFILES_ACTIVE
+           value: "compose"
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-gateway-deployment
+  labels:
+    app: api-gateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api-gateway
+  template:
+    metadata:
+      labels:
+        app: api-gateway
+    spec:
+      containers:
+      - name: rvstore-api-gateway
+        image: vergeops/k8s-rvstore-api-gateway:1.0
+        imagePullPolicy: Always
+        env:
+         - name: SPRING_PROFILES_ACTIVE
+           value: "compose"

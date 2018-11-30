@@ -1,0 +1,9 @@
+server:
+  port: 9002
+  servlet:
+    context-path: /orders
+spring:
+  data:
+    mongodb:
+      database: orders
+      uri: mongodb://mongoadmin:secret@localhost:27017

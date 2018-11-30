@@ -1,0 +1,56 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<div style="text-align:center">
+  <h1>
+    Welcome to RV Store!
+  </h1>
+</div>
+
+<h1>Products</h1>
+<div class="row">
+  <div *ngFor="let product of products">
+    <div class="col-sm-2">
+      <div class="card" style="width: 18rem;">
+        <img class="card-img-top" src="{{product.image}}" alt="Card image cap">
+        <div class="card-body">
+          <h5 class="card-title">{{product.name}}</h5>
+          <p class="card-text">{{product.description}}</p>
+          <h4>{{product.price | currency}}</h4>
+          <a href="#" class="btn btn-primary">Buy It</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<h1>Orders</h1>
+<p><a href="#" (click)="updateInterval(10)">10</a> | <a href="#" (click)="updateInterval(30)">30</a> | <a href="#" (click)="updateInterval(60)">60</a> | <a href="#" (click)="updateInterval(120)">120</a> seconds <i *ngIf="orders.length == 0" class="fas fa-sync fa-spin"></i> {{loading}}</p>
+<table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Date</th>
+        <th scope="col">Customer</th>
+        <th scope="col">Items</th>
+        <th scope="col">Subtotal</th>
+        <th scope="col">Tax</th>
+        <th scope="col">Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let order of orders">
+        <th scope="row">{{order.id}}</th>
+        <td>{{order.orderDate | date: 'medium'}}</td>
+        <td>{{order.customerName}}</td>
+        <td><p *ngFor="let item of order.items">
+          {{item.name}} - {{item.price | currency}}  
+        </p></td>
+        <td>{{order.subTotal | currency}}</td>
+        <td>{{order.tax | currency}}</td>
+        <td><strong>{{order.total | currency}}</strong></td>
+      </tr>
+    </tbody>
+  </table>
+
+  Backend host name: <input type="text" size="100" [(ngModel)]="backendUrl"> <button class="btn btn-primary" (click)="updateBackend()">Update</button> {{message}}
+
+<router-outlet></router-outlet>
