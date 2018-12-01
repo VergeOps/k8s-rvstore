@@ -17,11 +17,9 @@ spec:
       containers:
       - name: rvstore-orders-mongodb
         image: mongo
-        env:
-         - name: MONGO_INITDB_ROOT_USERNAME
-           value: "mongoadmin"
-         - name: MONGO_INITDB_ROOT_PASSWORD
-           value: "secret"
+        envFrom:
+        - configMapRef:
+            name: mongodb-config
         ports:
          - containerPort: 27017
         volumeMounts:
