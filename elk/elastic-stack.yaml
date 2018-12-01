@@ -247,7 +247,7 @@ spec:
   - metadata:
       name: elasticsearch-logging
     spec:
-      storageClassName: cloud-ssd
+      storageClassName: elasticsearch-volume
       accessModes: [ "ReadWriteOnce" ]
       resources:
         requests:
@@ -315,3 +315,9 @@ spec:
   selector:
     k8s-app: kibana-logging
   type: LoadBalancer
+---
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: elasticsearch-volume
+provisioner: kubernetes.io/aws-ebs
