@@ -1,0 +1,6 @@
+FROM nginx
+
+COPY index-2.0.html /usr/share/nginx/html/index.html
+COPY liveness-start.sh /
+
+CMD sh /liveness-start.sh
