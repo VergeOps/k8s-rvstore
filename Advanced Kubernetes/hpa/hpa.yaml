@@ -4,7 +4,7 @@ metadata:
   name: nginx-scaler
 spec:
   minReplicas: 1
-  maxReplicas: 3
+  maxReplicas: 6
   scaleTargetRef:
     apiVersion: extensions/v1beta1
     kind: Deployment

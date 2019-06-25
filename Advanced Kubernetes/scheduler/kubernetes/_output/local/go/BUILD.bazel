@@ -1,0 +1,3 @@
+# This dummy BUILD file prevents Bazel from trying to descend through the
+# infinite loop created by the symlink at
+# /Users/tsolley/OneDrive - VergeOps/Clients/DI/VMWare Adv K8S TT June 24-26/scheduler/kubernetes/_output/local/go/src/k8s.io/kubernetes
