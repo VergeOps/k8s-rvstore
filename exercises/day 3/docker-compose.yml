@@ -11,7 +11,7 @@ services:
      - WORDPRESS_DB_PASSWORD=examplepass
      - WORDPRESS_DB_NAME=exampledb
   mysql:
-    image: "mysql:latest"
+    image: "mysql:5.7"
     restart: always
     ports:
      - "3306:3306"
