@@ -5,8 +5,6 @@ services:
     restart: always
     ports:
      - "80:80"
-    networks:
-     - rvstore
   rvstore-api-gateway:
     image: "vergeops/k8s-rvstore-api-gateway:1.0"
     restart: always
@@ -14,8 +12,6 @@ services:
      - "9000:9000"
     environment:
      - SPRING_PROFILES_ACTIVE=compose
-    networks:
-     - rvstore
   rvstore-product-api:
     image: "vergeops/k8s-rvstore-product-api:1.0"
     restart: always
@@ -23,8 +19,6 @@ services:
      - "9001:9001"
     environment:
      - SPRING_PROFILES_ACTIVE=compose
-    networks:
-     - rvstore
   rvstore-order-api:
     image: "vergeops/k8s-rvstore-order-api:1.0"
     restart: always
@@ -32,8 +26,6 @@ services:
      - "9002:9002"
     environment:
      - SPRING_PROFILES_ACTIVE=compose
-    networks:
-     - rvstore
   rvstore-orders-mongodb:
     image: "mongo"
     restart: always
@@ -42,15 +34,7 @@ services:
     environment:
      - MONGO_INITDB_ROOT_USERNAME=mongoadmin
      - MONGO_INITDB_ROOT_PASSWORD=secret
-    networks:
-     - rvstore
   rvstore-order-simulator:
     image: "vergeops/k8s-rvstore-order-simulator:1.0"
     environment:
      - SPRING_PROFILES_ACTIVE=compose
-    networks:
-     - rvstore
-networks:
-  rvstore:
-    external:
-      name: rvstore
