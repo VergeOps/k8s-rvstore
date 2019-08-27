@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: big-pod
+  namespace: advk8s
+spec:
+  containers:
+  - name: nginx
+    image: nginx:latest
+    resources:
+      limits:
+        cpu: "1001m"
+        memory: "1025Mi"
+      requests:
+        cpu: "501m"
+        memory: "257Mi"

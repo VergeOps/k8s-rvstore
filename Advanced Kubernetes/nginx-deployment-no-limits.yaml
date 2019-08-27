@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nginx-deployment
+  namespace: advk8s
   labels:
     app: nginx
 spec:
@@ -22,6 +23,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: nginx-service
+  namespace: advk8s
 spec:
   selector:
     app: nginx

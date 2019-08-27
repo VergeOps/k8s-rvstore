@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: random-scheduler
+  labels:
+    app: random-scheduler
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: random-scheduler
+  template:
+    metadata:
+      labels:
+        app: random-scheduler
+    spec:
+      serviceAccount: random-scheduler
+      containers:
+        - name: random-scheduler
+          image: martonsereg/scheduler:v0.3
+          imagePullPolicy: Always

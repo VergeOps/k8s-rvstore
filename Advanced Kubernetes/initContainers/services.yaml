@@ -2,6 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: myservice
+  namespace: advk8s
 spec:
   ports:
   - protocol: TCP
@@ -12,6 +13,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: mydb
+  namespace: advk8s
 spec:
   ports:
   - protocol: TCP
