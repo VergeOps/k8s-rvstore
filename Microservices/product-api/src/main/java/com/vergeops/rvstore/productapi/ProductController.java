@@ -43,7 +43,7 @@ public class ProductController {
 		sewerHose.setDescription(
 				"Oh what fun times you'll have with this! Be sure to stock up on gloves and disinfectant soap before checkout!");
 		sewerHose.setPrice(19.99);
-		sewerHose.setImage("https://cdn.campaddict.com/wp-content/uploads/Lippert-Waste-Master-sewer-hose-dump-station-300x221.jpg");
+		sewerHose.setImage("https://campaddict.com/wp-content/uploads/RV-sewer-hose-in-use.jpg");
 		products.add(sewerHose);
 
 		Product jacks = new Product();

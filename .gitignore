@@ -6,3 +6,4 @@
 **/.classpath
 **/node_modules
 **/target/**
+**/mvnw.cmd
