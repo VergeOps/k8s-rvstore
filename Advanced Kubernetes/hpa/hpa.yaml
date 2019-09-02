@@ -5,7 +5,7 @@ metadata:
   namespace: advk8s
 spec:
   minReplicas: 1
-  maxReplicas: 6
+  maxReplicas: 10
   scaleTargetRef:
     apiVersion: extensions/v1beta1
     kind: Deployment

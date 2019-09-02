@@ -4,7 +4,7 @@ metadata:
   name: nginx-deployment-v2
   labels:
     app: nginx
-    version: v2
+    ver: v2
 spec:
   replicas: 10
   selector:
@@ -14,7 +14,7 @@ spec:
     metadata:
       labels:
         app: nginx
-        version: v2
+        ver: v2
     spec:
       containers:
       - name: nginx
