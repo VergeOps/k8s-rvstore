@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: probe-deployment
+  labels:
+    app: nginx
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: vergeops/versioned-nginx:liveness
+      initContainers:
+      - name: random-wait
+        image: busybox:1.28
+        command: ['sh', '-c', 'echo Sleeping...; sleep $((RANDOM % 30)); echo Done;']
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: nginx-service
+spec:
+  selector:
+    app: nginx
+  ports:
+  - protocol: TCP
+    port: 80
+    nodePort: 30080
+  type: NodePort
