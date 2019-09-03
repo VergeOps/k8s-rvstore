@@ -164,7 +164,7 @@ spec:
               value: 
           volumeMounts:
             - name: ssl-certs
-              mountPath: 
+              mountPath: "/etc/ssl/certs/ca-certificates.crt"
               readOnly: true
           imagePullPolicy: "Always"
       volumes:
