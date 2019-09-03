@@ -135,7 +135,7 @@ spec:
         kubernetes.io/role: master
       serviceAccountName: cluster-autoscaler
       containers:
-        - image: {{IMAGE}}
+        - image: 
           name: cluster-autoscaler
           livenessProbe:
             httpGet:
@@ -156,19 +156,19 @@ spec:
             - ./cluster-autoscaler
             - --v=4
             - --stderrthreshold=info
-            - --cloud-provider={{CLOUD_PROVIDER}}
+            - --cloud-provider=
             - --skip-nodes-with-local-storage=false
-            - --nodes={{MIN_NODES}}:{{MAX_NODES}}:{{GROUP_NAME}}
+            - --nodes=1:2:nodes.rvstore.k8s.local
           env:
             - name: AWS_REGION
-              value: {{AWS_REGION}}
+              value: 
           volumeMounts:
             - name: ssl-certs
-              mountPath: {{SSL_CERT_PATH}}
+              mountPath: 
               readOnly: true
           imagePullPolicy: "Always"
       volumes:
         - name: ssl-certs
           hostPath:
-            path: {{SSL_CERT_PATH}}
+            path: 
       dnsPolicy: "Default"
