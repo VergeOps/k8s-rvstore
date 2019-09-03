@@ -135,7 +135,7 @@ spec:
         kubernetes.io/role: master
       serviceAccountName: cluster-autoscaler
       containers:
-        - image: 
+        - image: k8s.gcr.io/cluster-autoscaler:v1.2.2
           name: cluster-autoscaler
           livenessProbe:
             httpGet:
@@ -161,7 +161,7 @@ spec:
             - --nodes=1:2:nodes.rvstore.k8s.local
           env:
             - name: AWS_REGION
-              value: 
+              value: us-west-2
           volumeMounts:
             - name: ssl-certs
               mountPath: "/etc/ssl/certs/ca-certificates.crt"
