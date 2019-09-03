@@ -170,5 +170,5 @@ spec:
       volumes:
         - name: ssl-certs
           hostPath:
-            path: 
+            path: "/etc/ssl/certs/ca-certificates.crt"
       dnsPolicy: "Default"
