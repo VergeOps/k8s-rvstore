@@ -66,8 +66,15 @@ public class OrderSimulatorTask {
 
 	private Person getPerson() {
 		// Get a random person
-		RandomPerson rando = restTemplate.getForObject("https://randomuser.me/api/?nat=gb", RandomPerson.class);
-		return rando.getResults().get(0);
+		//RandomPerson rando = restTemplate.getForObject("https://randomuser.me/api/?nat=gb", RandomPerson.class);
+		//return rando.getResults().get(0);
+		Name name = new Name();
+		name.setFirst("John");
+		name.setLast("Smith");
+
+		Person person = new Person();
+		person.setName(name);
+		return person;
 	}
 	
 	private void submitOrder(Order order) {
