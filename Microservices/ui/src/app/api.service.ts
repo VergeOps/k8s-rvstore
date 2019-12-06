@@ -21,11 +21,11 @@ export class ApiService {
   //endpoint = environment.apiEndpoint;
 
   getProducts(): Observable<Product> {
-    return this.http.get<Product>(this.endpoint + "products/");
+    return this.http.get<Product>(this.endpoint + "/products/");
   }
 
   getOrders(): Observable<Order> {
-    return this.http.get<Order>(this.endpoint + "orders/");
+    return this.http.get<Order>(this.endpoint + "/orders/");
   }
 
 }

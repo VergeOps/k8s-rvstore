@@ -5,7 +5,7 @@ metadata:
   labels:
     app: ui
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: ui
@@ -37,7 +37,7 @@ metadata:
   labels:
     app: product-api
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: product-api
@@ -72,7 +72,7 @@ metadata:
   labels:
     app: order-api
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: order-api
@@ -132,7 +132,7 @@ metadata:
   labels:
     app: api-gateway
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: api-gateway
