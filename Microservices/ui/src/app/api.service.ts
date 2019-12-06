@@ -12,8 +12,8 @@ export class ApiService {
   constructor(private http: HttpClient) { 
     if(window.location.hostname == 'localhost') {
       this.endpoint = "http://localhost:9000/";
-    } else if (window.location.hostname == '192.168.99.100') {
-      this.endpoint = "http://192.168.99.100:30090/";
+    } else if (window.location.hostname.startsWith('192.168.')) {
+      this.endpoint = "http://" + window.location.hostname + ":30090/";
     } 
 
   }
