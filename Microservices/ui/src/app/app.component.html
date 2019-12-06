@@ -3,6 +3,7 @@
   <h1>
     Welcome to RV Store!
   </h1>
+  <h1>This is version 2, which is even more ugly than version 1!</h1>
 </div>
 
 <h1>Products</h1>
@@ -50,7 +51,7 @@
       </tr>
     </tbody>
   </table>
-
-  Backend host name: <input type="text" size="100" [(ngModel)]="backendUrl"> <button class="btn btn-primary" (click)="updateBackend()">Update</button> {{message}}
-
+<form>
+  Backend host name: <input name="backendUrl" type="text" size="100" [(ngModel)]="backendUrl"/> <button type="submit" class="btn btn-primary" (click)="updateBackend()">Update</button> {{message}}
+</form>
 <router-outlet></router-outlet>

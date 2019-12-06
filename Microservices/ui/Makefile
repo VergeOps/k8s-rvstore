@@ -13,3 +13,14 @@ run-docker:
 	
 push-docker:
 	docker push vergeops/k8s-rvstore-ui:1.0
+
+build-docker-v2: build-package
+	docker build -t vergeops/k8s-rvstore-ui:2.0 .
+	
+run-docker-v2:
+	-docker stop rvstore-ui
+	-docker rm rvstore-ui
+	docker run -d -p 80:80 --name rvstore-ui vergeops/k8s-rvstore-ui:2.0
+	
+push-docker-v2:
+	docker push vergeops/k8s-rvstore-ui:2.0

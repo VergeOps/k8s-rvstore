@@ -20,12 +20,13 @@ spec:
         envFrom:
         - configMapRef:
             name: mongodb-config
-        volumeMounts:
-        - mountPath: /data/db
-          name: mongo-volume
+# Commented until you update the colume path at the bottom to be a valid file path. Then uncomment all these lines.
+#        volumeMounts:
+#        - mountPath: /data/db
+#          name: mongo-volume
         ports:
         - containerPort: 27017
-      volumes:
-      - name: mongo-volume
-        hostPath:
-          path: /Users/tsolley/Desktop/Temp/rvstore-mongodb
+#      volumes:
+#      - name: mongo-volume
+#        hostPath:
+#          path: /Users/tsolley/Desktop/Temp/rvstore-mongodb
