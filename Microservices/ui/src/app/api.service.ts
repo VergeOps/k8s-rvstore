@@ -7,13 +7,13 @@ import { environment } from '../environments/environment';
 
 @Injectable()
 export class ApiService {
-  public endpoint: string = "http://rvstoreapi.vergeops.com/"; 
+  public endpoint: string = "http://rvstoreapi.vergeops.com";
   
   constructor(private http: HttpClient) { 
     if(window.location.hostname == 'localhost') {
-      this.endpoint = "http://localhost:9000/";
+      this.endpoint = "http://localhost:9000";
     } else if (window.location.hostname.startsWith('192.168.')) {
-      this.endpoint = "http://" + window.location.hostname + ":30090/";
+      this.endpoint = "http://" + window.location.hostname + ":30090";
     } 
 
   }
