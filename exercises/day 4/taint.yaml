@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-with-noexecute
+spec:
+  tolerations:
+  - key: "nginx-not-allowed"
+    operator: "Equal"
+    value: "true"
+    effect: "NoExecute"
+    tolerationSeconds: 30
+  - key: "nginx-only"
+    operator: "Equal"
+    value: "true"
+    effect: "NoSchedule"
+  containers:
+  - name: nginx
+    image: nginx:latest
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: generic-nginx-pod
+spec:
+  containers:
+  - name: nginx
+    image: nginx:latest
