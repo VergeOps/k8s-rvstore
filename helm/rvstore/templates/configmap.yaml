@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-mongodb-config
+  namespace: default
+data:
+  MONGO_INITDB_ROOT_USERNAME: {{ .Values.mongo.username }}
+  MONGO_INITDB_ROOT_PASSWORD: {{ .Values.mongo.password }}
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-workload-config
+  namespace: default
+data:
+  SPRING_PROFILES_ACTIVE: {{ .Values.springProfile }}

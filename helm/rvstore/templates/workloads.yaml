@@ -1,0 +1,183 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.services.ui.name }}
+  labels:
+    app: ui
+spec:
+  replicas: {{ .Values.services.ui.replicas }}
+  selector:
+    matchLabels:
+      app: ui
+  template:
+    metadata:
+      labels:
+        app: ui
+    spec:
+      containers:
+      - name: ui
+        image: {{ .Values.services.ui.image }}
+        imagePullPolicy: Always
+        ports:
+        - containerPort: {{ .Values.services.ui.port }}
+        readinessProbe:
+          httpGet:
+            path: /
+            port: {{ .Values.services.ui.port }}
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          successThreshold: 2
+          failureThreshold: 1
+        resources:
+          limits:
+            cpu: {{ .Values.services.ui.resources.limits }}
+          requests:
+            cpu: {{ .Values.services.ui.resources.requests }}
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.services.productApi.name }}
+  labels:
+    app: product-api
+spec:
+  replicas: {{ .Values.services.productApi.replicas }}
+  selector:
+    matchLabels:
+      app: product-api
+  template:
+    metadata:
+      labels:
+        app: product-api
+    spec:
+      containers:
+      - name: rvstore-product-api
+        image: {{ .Values.services.productApi.image }}
+        imagePullPolicy: Always
+        envFrom:
+        - configMapRef:
+            name: {{ .Release.Name }}-workload-config
+        ports:
+        - containerPort: {{ .Values.services.productApi.port }}
+        readinessProbe:
+          httpGet:
+            path: /products/
+            port: {{ .Values.services.productApi.port }}
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 2
+          failureThreshold: 1
+        resources:
+          limits:
+            cpu: {{ .Values.services.productApi.resources.limits }}
+          requests:
+            cpu: {{ .Values.services.productApi.resources.requests }}
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.services.orderApi.name }}
+  labels:
+    app: order-api
+spec:
+  replicas: {{ .Values.services.orderApi.replicas }}
+  selector:
+    matchLabels:
+      app: order-api
+  template:
+    metadata:
+      labels:
+        app: order-api
+    spec:
+      containers:
+      - name: rvstore-order-api
+        image: {{ .Values.services.orderApi.image }}
+        imagePullPolicy: Always
+        envFrom:
+        - configMapRef:
+            name: {{ .Release.Name }}-workload-config
+        ports:
+        - containerPort: {{ .Values.services.orderApi.port }}
+        readinessProbe:
+          httpGet:
+            path: /orders
+            port: {{ .Values.services.orderApi.port }}
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 2
+          failureThreshold: 1
+        resources:
+          limits:
+            cpu: {{ .Values.services.orderApi.resources.limits }}
+          requests:
+            cpu: {{ .Values.services.orderApi.resources.requests }}
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.services.orderSimulator.name }}
+  labels:
+    app: order-simulator
+spec:
+  replicas: {{ .Values.services.orderSimulator.replicas }}
+  selector:
+    matchLabels:
+      app: order-simulator
+  template:
+    metadata:
+      labels:
+        app: order-simulator
+    spec:
+      containers:
+      - name: rvstore-order-simulator
+        image: {{ .Values.services.orderSimulator.image }}
+        imagePullPolicy: Always
+        envFrom:
+        - configMapRef:
+            name: {{ .Release.Name }}-workload-config
+        resources:
+          limits:
+            cpu: {{ .Values.services.orderSimulator.resources.limits }}
+          requests:
+            cpu: {{ .Values.services.orderSimulator.resources.requests }}
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.services.gateway.name }}
+  labels:
+    app: api-gateway
+spec:
+  replicas: {{ .Values.services.gateway.replicas }}
+  selector:
+    matchLabels:
+      app: api-gateway
+  template:
+    metadata:
+      labels:
+        app: api-gateway
+    spec:
+      containers:
+      - name: rvstore-api-gateway
+        image: {{ .Values.services.gateway.image }}
+        imagePullPolicy: Always
+        envFrom:
+        - configMapRef:
+            name: {{ .Release.Name }}-workload-config
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: {{ .Values.services.gateway.port }}
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 2
+          failureThreshold: 1
+        resources:
+          limits:
+            cpu: {{ .Values.services.gateway.resources.limits }}
+          requests:
+            cpu: {{ .Values.services.gateway.resources.requests }}

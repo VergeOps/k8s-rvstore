@@ -1,0 +1,33 @@
+# Spring properties
+springProfile: compose
+
+# MongoDB properties
+mongo:
+  image: mongo:4.2.5
+  replicas: 1
+  username: mongoadmin
+  password: secret
+  port: 27017
+
+services:
+  ui:
+    port: 80
+    nodePort: 30080
+    replicas: 1
+    image: vergeops/k8s-rvstore-ui:2.0
+  productApi:
+    port: 9001
+    replicas: 1
+    image: vergeops/k8s-rvstore-product-api:1.0
+  orderApi:
+    port: 9002
+    replicas: 1
+    image: vergeops/k8s-rvstore-order-api:1.0
+  gateway:
+    port: 9000
+    nodePort: 30090
+    replicas: 1
+    image: vergeops/k8s-rvstore-api-gateway:1.0
+  orderSimulator:
+    replicas: 1
+    image: vergeops/k8s-rvstore-order-simulator:1.0

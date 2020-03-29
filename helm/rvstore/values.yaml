@@ -1,0 +1,55 @@
+# Spring properties
+springProfile: compose
+
+# MongoDB properties
+mongo:
+  image: mongo:4.2.5
+  replicas: 1
+  username: mongoadmin
+  password: secret
+  port: 27017
+
+# Service properties
+services:
+  targetCPUPercentage: 50
+  ui:
+    name: ui-deployment
+    port: 80
+    nodePort: 30080
+    replicas: 1
+    image: vergeops/k8s-rvstore-ui:1.0
+    resources:
+      requests: 100m
+      limits: 200m
+  productApi:
+    name: product-api-deployment
+    port: 9001
+    replicas: 1
+    image: vergeops/k8s-rvstore-product-api:1.0
+    resources:
+      requests: 100m
+      limits: 500m
+  orderApi:
+    name: order-api-deployment
+    port: 9002
+    replicas: 1
+    image: vergeops/k8s-rvstore-order-api:1.0
+    resources:
+      requests: 100m
+      limits: 500m
+  gateway:
+    name: api-gateway-deployment
+    port: 9000
+    nodePort: 30090
+    replicas: 1
+    image: vergeops/k8s-rvstore-api-gateway:1.0
+    resources:
+      requests: 500m
+      limits: 700m
+  orderSimulator:
+    name: order-simulator-deployment
+    replicas: 1
+    image: vergeops/k8s-rvstore-order-simulator:1.0
+    resources:
+      requests: 50m
+      limits: 100m

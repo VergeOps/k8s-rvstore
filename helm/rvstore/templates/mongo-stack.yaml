@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-order-mongodb-deployment
+  labels:
+    app: order-mongodb
+spec:
+  replicas: {{ .Values.mongo.replicas }}
+  selector:
+    matchLabels:
+      app: order-mongodb
+  template:
+    metadata:
+      labels:
+        app: order-mongodb
+    spec:
+      containers:
+      - name: rvstore-orders-mongodb
+        image: {{ .Values.mongo.image }}
+        envFrom:
+        - configMapRef:
+            name: {{ .Release.Name }}-mongodb-config
+        ports:
+        - containerPort: 27017
