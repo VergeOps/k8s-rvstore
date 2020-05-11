@@ -10,4 +10,4 @@ spec:
     apiVersion: extensions/v1beta1
     kind: Deployment
     name: nginx-deployment
-  targetCPUUtilizationPercentage: 20
+  targetCPUUtilizationPercentage: 10

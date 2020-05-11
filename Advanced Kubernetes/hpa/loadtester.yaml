@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: loadtester
+  namespace: advk8s
+spec:
+  containers:
+  - name: loader
+    image: bunchjesse/loadtest
+    env:
+        - name: NUM_USERS
+          value: "50"
+        - name: URL
+          value: http://nginx-service:80
+        - name: DURATION
+          value: "20000"
