@@ -1,11 +1,12 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: rvstore-ui
+  name: {{ .Values.services.ui.serviceName }}
+  namespace: {{ .Values.namespace }}
 spec:
   type: NodePort
   selector:
-    app: ui
+    app: {{ .Values.services.ui.label }}
   ports:
   - protocol: TCP
     port: {{ .Values.services.ui.port }}
@@ -14,11 +15,12 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name: rvstore-product-api
+  name: {{ .Values.services.productApi.serviceName }}
+  namespace: {{ .Values.namespace }}
 spec:
   type: ClusterIP
   selector:
-    app: product-api
+    app: {{ .Values.services.productApi.label }}
   ports:
   - protocol: TCP
     port: {{ .Values.services.productApi.port }}
@@ -27,11 +29,12 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name: rvstore-order-api
+  name: {{ .Values.services.orderApi.serviceName }}
+  namespace: {{ .Values.namespace }}
 spec:
   type: ClusterIP
   selector:
-    app: order-api
+    app: {{ .Values.services.orderApi.label }}
   ports:
   - protocol: TCP
     port: {{ .Values.services.orderApi.port }}
@@ -40,25 +43,12 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name: rvstore-orders-mongodb
+  name: {{ .Values.mongo.serviceName }}
+  namespace: {{ .Values.namespace }}
 spec:
   type: ClusterIP
   selector:
-    app: order-mongodb
+    app: {{ .Values.mongo.label }}
   ports:
   - protocol: TCP
     port: {{ .Values.mongo.port }}
-
----
-kind: Service
-apiVersion: v1
-metadata:
-  name: rvstore-api-gateway
-spec:
-  type: NodePort
-  selector:
-    app: api-gateway
-  ports:
-  - protocol: TCP
-    port: {{ .Values.services.gateway.port }}
-    nodePort: {{ .Values.services.gateway.nodePort }}

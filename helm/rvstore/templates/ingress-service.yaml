@@ -1,0 +1,18 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ .Values.services.ingress.name }}-service
+  namespace: {{ .Values.namespace }}
+  labels:
+    app.kubernetes.io/name: {{ .Values.services.ingress.name }}
+    app.kubernetes.io/part-of: {{ .Values.services.ingress.name }}
+spec:
+  externalTrafficPolicy: Local
+  type: NodePort
+  selector:
+    app.kubernetes.io/name: {{ .Values.services.ingress.name }}
+    app.kubernetes.io/part-of: {{ .Values.services.ingress.name }}
+  ports:
+    - name: http
+      port: 80
+      nodePort: {{ .Values.services.ingress.port }}

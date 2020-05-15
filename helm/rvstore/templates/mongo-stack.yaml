@@ -2,17 +2,16 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Release.Name }}-order-mongodb-deployment
-  labels:
-    app: order-mongodb
+  namespace: {{ .Values.namespace }}
 spec:
   replicas: {{ .Values.mongo.replicas }}
   selector:
     matchLabels:
-      app: order-mongodb
+      app: {{ .Values.mongo.label }}
   template:
     metadata:
       labels:
-        app: order-mongodb
+        app: {{ .Values.mongo.label }}
     spec:
       containers:
       - name: rvstore-orders-mongodb

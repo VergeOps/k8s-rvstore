@@ -1,11 +1,11 @@
-FROM alpine:latest
-MAINTAINER Tim Solley
-USER root
+FROM golang
 
-RUN apk update
-RUN apk fetch openjdk8
-RUN apk add openjdk8
+WORKDIR /go/src/product-api
+COPY ./main.go .
 
-ADD target/product-api-0.0.1-SNAPSHOT.jar /
+RUN ls -la
 
-ENTRYPOINT java -jar /product-api-0.0.1-SNAPSHOT.jar
+RUN go get -d -v ./...
+RUN go install -v ./...
+
+CMD ["product-api"]

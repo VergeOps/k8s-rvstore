@@ -2,17 +2,16 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Values.services.ui.name }}
-  labels:
-    app: ui
+  namespace: {{ .Values.namespace }}
 spec:
   replicas: {{ .Values.services.ui.replicas }}
   selector:
     matchLabels:
-      app: ui
+      app: {{ .Values.services.ui.label }}
   template:
     metadata:
       labels:
-        app: ui
+        app: {{ .Values.services.ui.label }}
     spec:
       containers:
       - name: ui
@@ -39,17 +38,16 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Values.services.productApi.name }}
-  labels:
-    app: product-api
+  namespace: {{ .Values.namespace }}
 spec:
   replicas: {{ .Values.services.productApi.replicas }}
   selector:
     matchLabels:
-      app: product-api
+      app: {{ .Values.services.productApi.label }}
   template:
     metadata:
       labels:
-        app: product-api
+        app: {{ .Values.services.productApi.label }}
     spec:
       containers:
       - name: rvstore-product-api
@@ -79,17 +77,16 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Values.services.orderApi.name }}
-  labels:
-    app: order-api
+  namespace: {{ .Values.namespace }}
 spec:
   replicas: {{ .Values.services.orderApi.replicas }}
   selector:
     matchLabels:
-      app: order-api
+      app: {{ .Values.services.orderApi.label }}
   template:
     metadata:
       labels:
-        app: order-api
+        app: {{ .Values.services.orderApi.label }}
     spec:
       containers:
       - name: rvstore-order-api
@@ -119,8 +116,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Values.services.orderSimulator.name }}
-  labels:
-    app: order-simulator
+  namespace: {{ .Values.namespace }}
 spec:
   replicas: {{ .Values.services.orderSimulator.replicas }}
   selector:
@@ -143,41 +139,3 @@ spec:
             cpu: {{ .Values.services.orderSimulator.resources.limits }}
           requests:
             cpu: {{ .Values.services.orderSimulator.resources.requests }}
-
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: {{ .Values.services.gateway.name }}
-  labels:
-    app: api-gateway
-spec:
-  replicas: {{ .Values.services.gateway.replicas }}
-  selector:
-    matchLabels:
-      app: api-gateway
-  template:
-    metadata:
-      labels:
-        app: api-gateway
-    spec:
-      containers:
-      - name: rvstore-api-gateway
-        image: {{ .Values.services.gateway.image }}
-        imagePullPolicy: Always
-        envFrom:
-        - configMapRef:
-            name: {{ .Release.Name }}-workload-config
-        readinessProbe:
-          httpGet:
-            path: /health
-            port: {{ .Values.services.gateway.port }}
-          initialDelaySeconds: 10
-          periodSeconds: 10
-          successThreshold: 2
-          failureThreshold: 1
-        resources:
-          limits:
-            cpu: {{ .Values.services.gateway.resources.limits }}
-          requests:
-            cpu: {{ .Values.services.gateway.resources.requests }}

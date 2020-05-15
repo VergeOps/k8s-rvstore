@@ -1,9 +1,9 @@
 SHELL := /bin/bash
 
-build-package:
-	mvn package
-	
-build-docker: build-package
+build:
+	go build
+
+build-docker: build
 	docker build -t vergeops/k8s-rvstore-product-api:1.0 .
 	
 run-docker:
