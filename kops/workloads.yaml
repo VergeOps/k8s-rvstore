@@ -5,7 +5,7 @@ metadata:
   labels:
     app: ui
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: ui
@@ -28,6 +28,13 @@ spec:
           periodSeconds: 10
           successThreshold: 2
           failureThreshold: 1
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 1Gi
+          requests:
+            cpu: 500m
+            memory: .5Gi
 
 ---
 apiVersion: apps/v1
@@ -37,7 +44,7 @@ metadata:
   labels:
     app: product-api
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: product-api
@@ -63,6 +70,13 @@ spec:
           periodSeconds: 10
           successThreshold: 2
           failureThreshold: 1
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 1Gi
+          requests:
+            cpu: 500m
+            memory: .5Gi
 
 ---
 apiVersion: apps/v1
@@ -72,7 +86,7 @@ metadata:
   labels:
     app: order-api
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: order-api
@@ -98,6 +112,13 @@ spec:
           periodSeconds: 10
           successThreshold: 2
           failureThreshold: 1
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 1Gi
+          requests:
+            cpu: 500m
+            memory: .5Gi
 
 ---
 apiVersion: apps/v1
@@ -123,6 +144,13 @@ spec:
         envFrom:
         - configMapRef:
             name: workload-config
+        resources:
+          limits:
+            cpu: 500m
+            memory: .5Gi
+          requests:
+            cpu: 250m
+            memory: .25Gi
 
 ---
 apiVersion: apps/v1
@@ -132,7 +160,7 @@ metadata:
   labels:
     app: api-gateway
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: api-gateway
@@ -156,3 +184,10 @@ spec:
           periodSeconds: 10
           successThreshold: 2
           failureThreshold: 1
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 1Gi
+          requests:
+            cpu: 500m
+            memory: .5Gi
