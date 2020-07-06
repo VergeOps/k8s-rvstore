@@ -71,7 +71,36 @@ spec:
             cpu: {{ .Values.services.productApi.resources.limits }}
           requests:
             cpu: {{ .Values.services.productApi.resources.requests }}
-
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.services.gateway.name }}
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: {{ .Values.services.gateway.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.services.gateway.label }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.services.gateway.label }}
+    spec:
+      containers:
+      - name: rvstore-api-gateway
+        image: {{ .Values.services.gateway.image }}
+        imagePullPolicy: Always
+        envFrom:
+        - configMapRef:
+            name: {{ .Release.Name }}-workload-config
+        ports:
+        - containerPort: {{ .Values.services.gateway.port }}
+        resources:
+          limits:
+            cpu: {{ .Values.services.gateway.resources.limits }}
+          requests:
+            cpu: {{ .Values.services.gateway.resources.requests }}
 ---
 apiVersion: apps/v1
 kind: Deployment

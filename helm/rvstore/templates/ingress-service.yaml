@@ -8,7 +8,7 @@ metadata:
     app.kubernetes.io/part-of: {{ .Values.services.ingress.name }}
 spec:
   externalTrafficPolicy: Local
-  type: NodePort
+  type: {{ .Values.services.ingress.type }}
   selector:
     app.kubernetes.io/name: {{ .Values.services.ingress.name }}
     app.kubernetes.io/part-of: {{ .Values.services.ingress.name }}

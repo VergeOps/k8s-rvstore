@@ -1,5 +1,5 @@
 # Spring properties
-springProfile: compose
+springProfile: kops
 
 # Namespace
 namespace: rvstore
@@ -23,38 +23,40 @@ services:
     label: rvstore-ui
     port: 80
     nodePort: 30080
-    replicas: 1
-    type: NodePort
+    replicas: 3
     image: vergeops/k8s-rvstore-ui:1.0
+    type: LoadBalancer
     resources:
-      requests: 100m
-      limits: 200m
+      requests: 500m
+      limits: 500m
   productApi:
     name: product-api-deployment
     serviceName: rvstore-product-api
     label: rvstore-product-api
     port: 9001
-    replicas: 1
+    replicas: 3
     image: vergeops/k8s-rvstore-product-api:1.0
     resources:
-      requests: 100m
+      requests: 500m
       limits: 500m
   orderApi:
     name: order-api-deployment
     serviceName: rvstore-order-api
     label: rvstore-order-api
     port: 9002
-    replicas: 1
+    replicas: 3
     image: vergeops/k8s-rvstore-order-api:1.0
     resources:
-      requests: 100m
+      requests: 500m
       limits: 500m
   gateway:
     name: api-gateway-deployment
-    port: 9000
+    serviceName: rvstore-api-gateway
+    label: rvstore-api-gateway
+    port: 80
     nodePort: 30090
-    replicas: 1
-    type: Nodeport
+    replicas: 3
+    type: LoadBalancer
     image: vergeops/k8s-rvstore-api-gateway:1.0
     resources:
       requests: 500m
@@ -64,8 +66,8 @@ services:
     replicas: 1
     image: vergeops/k8s-rvstore-order-simulator:1.0
     resources:
-      requests: 50m
-      limits: 100m
+      requests: 250m
+      limits: 500m
     
   ingress:
     name: rvstore-gateway-ingress

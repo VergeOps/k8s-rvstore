@@ -1,0 +1,1 @@
+helm upgrade -f rvstore/values_kops.yaml rvstore rvstore

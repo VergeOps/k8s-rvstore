@@ -1,0 +1,1 @@
+helm install -f rvstore/values_kops.yaml rvstore rvstore
