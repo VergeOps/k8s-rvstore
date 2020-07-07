@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: logshipper
+spec:
+  volumes:
+    - name: shared-logs
+      emptyDir: {}
+
+  containers:
+    - name: log-creator
+      image: busybox
+      command: ["sh","-c","while true; do echo $(date) - Some activity >> /var/log/activity.log; sleep 10; done"]
+      volumeMounts:
+        - name: shared-logs
+          mountPath: /var/log
+    - name: log-shipper
+      image: busybox
+      command: ["sh","-c","while true; do cat /var/log/activity.log; sleep 10; done"]
+      volumeMounts:
+        - name: shared-logs
+          mountPath: /var/log
