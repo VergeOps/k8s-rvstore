@@ -33,6 +33,7 @@ spec:
         command:
           - /metrics-server
           - --kubelet-insecure-tls
+          - --kubelet-preferred-address-types=InternalIP
         imagePullPolicy: Always
         volumeMounts:
         - name: tmp-dir
