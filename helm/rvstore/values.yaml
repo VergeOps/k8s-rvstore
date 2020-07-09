@@ -51,14 +51,16 @@ services:
       limits: 500m
   gateway:
     name: api-gateway-deployment
+    serviceName: rvstore-api-gateway
     port: 9000
+    label: rvstore-api-gateway
     nodePort: 30090
     replicas: 1
-    type: Nodeport
+    type: NodePort
     image: vergeops/k8s-rvstore-api-gateway:1.0
     resources:
-      requests: 500m
-      limits: 700m
+      requests: 300m
+      limits: 300m
   orderSimulator:
     name: order-simulator-deployment
     replicas: 1
@@ -70,4 +72,4 @@ services:
   ingress:
     name: rvstore-gateway-ingress
     port: 30880
-    type: LoadBalancer
+    type: NodePort
