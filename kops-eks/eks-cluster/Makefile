@@ -1,4 +1,4 @@
-deploy-cluster:
+create-cluster:
 	eksctl create cluster --name rvstore --version 1.16 --managed --asg-access --profile vergeops --region us-east-1 --nodes 1 --nodes-min 1 --nodes-max 5 --nodegroup-name rvstore-workers --node-type t3.medium
 
 update-kubeconfig:
