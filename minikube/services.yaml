@@ -22,7 +22,18 @@ spec:
   ports:
   - protocol: TCP
     port: 9001
-
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: rvstore-auth-api
+spec:
+  type: ClusterIP
+  selector:
+    app: auth-api
+  ports:
+  - protocol: TCP
+    port: 9003
 ---
 kind: Service
 apiVersion: v1

@@ -20,3 +20,7 @@ spec:
         backend:
           serviceName: {{ .Values.services.orderApi.serviceName }}
           servicePort: {{ .Values.services.orderApi.port }}
+      - path: /auth
+        backend:
+          serviceName: {{ .Values.services.authApi.serviceName }}
+          servicePort: {{ .Values.services.authApi.port }}

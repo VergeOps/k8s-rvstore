@@ -5,6 +5,14 @@
   </h1>
 </div>
 
+<div><button class="btn btn-primary" (click)="login()">Login</button>
+  <div *ngIf="jwt">{{jwt.access_token}}</div>
+</div>
+<div>
+  <button class="btn btn-warn" (click)="accessSecure(jwt.access_token)">Access Secure Endpoint</button>
+  <div>{{secureResponse}}</div>
+</div>
+
 <h1>Products</h1>
 <div class="row">
   <div *ngFor="let product of products">
@@ -23,34 +31,39 @@
 </div>
 
 <h1>Orders</h1>
-<p><a href="#" (click)="updateInterval(10)">10</a> | <a href="#" (click)="updateInterval(30)">30</a> | <a href="#" (click)="updateInterval(60)">60</a> | <a href="#" (click)="updateInterval(120)">120</a> seconds <i *ngIf="orders.length == 0" class="fas fa-sync fa-spin"></i> {{loading}}</p>
+<p><a href="#" (click)="updateInterval(10)">10</a> | <a href="#" (click)="updateInterval(30)">30</a> | <a href="#"
+    (click)="updateInterval(60)">60</a> | <a href="#" (click)="updateInterval(120)">120</a> seconds <i
+    *ngIf="orders.length == 0" class="fas fa-sync fa-spin"></i> {{loading}}</p>
 <table class="table table-striped">
-    <thead>
-      <tr>
-        <th scope="col">ID</th>
-        <th scope="col">Date</th>
-        <th scope="col">Customer</th>
-        <th scope="col">Items</th>
-        <th scope="col">Subtotal</th>
-        <th scope="col">Tax</th>
-        <th scope="col">Total</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let order of orders">
-        <th scope="row">{{order.id}}</th>
-        <td>{{order.orderDate | date: 'medium'}}</td>
-        <td>{{order.customerName}}</td>
-        <td><p *ngFor="let item of order.items">
-          {{item.name}} - {{item.price | currency}}  
-        </p></td>
-        <td>{{order.subTotal | currency}}</td>
-        <td>{{order.tax | currency}}</td>
-        <td><strong>{{order.total | currency}}</strong></td>
-      </tr>
-    </tbody>
-  </table>
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Date</th>
+      <th scope="col">Customer</th>
+      <th scope="col">Items</th>
+      <th scope="col">Subtotal</th>
+      <th scope="col">Tax</th>
+      <th scope="col">Total</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let order of orders">
+      <th scope="row">{{order.id}}</th>
+      <td>{{order.orderDate | date: 'medium'}}</td>
+      <td>{{order.customerName}}</td>
+      <td>
+        <p *ngFor="let item of order.items">
+          {{item.name}} - {{item.price | currency}}
+        </p>
+      </td>
+      <td>{{order.subTotal | currency}}</td>
+      <td>{{order.tax | currency}}</td>
+      <td><strong>{{order.total | currency}}</strong></td>
+    </tr>
+  </tbody>
+</table>
 <form>
-  Backend host name: <input name="backendUrl" type="text" size="100" [(ngModel)]="backendUrl"> <button type="submit" class="btn btn-primary" (click)="updateBackend()">Update</button> {{message}}
+  Backend host name: <input name="backendUrl" type="text" size="100" [(ngModel)]="backendUrl"> <button type="submit"
+    class="btn btn-primary" (click)="updateBackend()">Update</button> {{message}}
 </form>
 <router-outlet></router-outlet>

@@ -39,6 +39,16 @@ services:
     resources:
       requests: 100m
       limits: 500m
+  authApi:
+    name: auth-api-deployment
+    serviceName: rvstore-auth-api
+    label: rvstore-auth-api
+    port: 9003
+    replicas: 1
+    image: vergeops/k8s-rvstore-auth-api:1.0
+    resources:
+      requests: 100m
+      limits: 500m
   orderApi:
     name: order-api-deployment
     serviceName: rvstore-order-api

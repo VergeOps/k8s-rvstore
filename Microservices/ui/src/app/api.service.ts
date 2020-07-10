@@ -4,6 +4,8 @@ import { Observable } from 'rxjs';
 import { Product } from './product';
 import { Order } from './order';
 import { environment } from '../environments/environment';
+import { Jwt } from './jwt';
+import { HttpHeaders } from '@angular/common/http';
 
 @Injectable()
 export class ApiService {
@@ -26,6 +28,20 @@ export class ApiService {
 
   getOrders(): Observable<Order> {
     return this.http.get<Order>(this.endpoint + "/orders/");
+  }
+
+  login(): Observable<Jwt> {
+    return this.http.get<Jwt>(this.endpoint + "/auth/login");
+  }
+
+  accessSecure(token: string): Observable<string> {
+    console.log("Using token: " + token);
+    let httpOptions = {
+      headers: new HttpHeaders({
+        'Authorization': token
+      })
+    };
+    return this.http.get<string>(this.endpoint + "/products/secure", httpOptions);
   }
 
 }

@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+
+	"github.com/dgrijalva/jwt-go"
 )
 
 type Product struct {
@@ -14,6 +16,14 @@ type Product struct {
 	Image       string  `json:"image"`
 }
 
+type RVClaims struct {
+	FirstName string `json:"firstName"`
+	LastName  string `json:"lastName"`
+	UserName  string `json:"username"`
+	Email     string `json:"email"`
+	jwt.StandardClaims
+}
+
 var products []Product
 
 func main() {
@@ -21,6 +31,7 @@ func main() {
 
 	http.HandleFunc("/products", handler)
 	http.HandleFunc("/products/", handler)
+	http.HandleFunc("/products/secure", secureHandler)
 
 	http.ListenAndServe(":9001", nil)
 }
@@ -37,9 +48,28 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, string(response))
 }
 
+func secureHandler(w http.ResponseWriter, r *http.Request) {
+	enableCors(&w)
+	if r.Method == http.MethodOptions {
+		fmt.Fprintf(w, string("ok"))
+	} else {
+		authorization := r.Header.Get("Authorization")
+		fmt.Println("Authorization header:")
+		fmt.Println(authorization)
+		result := VerifyJwt(authorization)
+		if result {
+			fmt.Fprintf(w, string("User is authorized to access this endpoint. Processing continues successfully."))
+		} else {
+			http.Error(w, "FORBIDDEN!", http.StatusForbidden)
+		}
+	}
+}
+
 func enableCors(w *http.ResponseWriter) {
 	(*w).Header().Set("Access-Control-Allow-Origin", "*")
 	(*w).Header().Set("Content-Type", "application/json; charset=utf-8")
+	(*w).Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
+	(*w).Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 }
 
 func addData() []Product {
@@ -89,4 +119,30 @@ func addData() []Product {
 	products = append(products, product)
 
 	return products
+}
+
+// VerifyJwt validates that a token is valid
+func VerifyJwt(tokenString string) bool {
+	token, err := jwt.ParseWithClaims(tokenString, &RVClaims{}, func(token *jwt.Token) (interface{}, error) {
+		return []byte("s8&5rtrjGSrgY$6U2UcvU8qbYtz8%Qd7Y*g8ar9Qk^h&EmJk7fj$R&BSyDD4bQmjP73zF5#F6Pf^6!F@qP5BdpBJEmBAnJD3aRs"), nil
+	})
+	if err != nil {
+		fmt.Println(err)
+		return false
+	}
+
+	fmt.Println("Token")
+	fmt.Println(token)
+
+	if claims, ok := token.Claims.(*RVClaims); ok && token.Valid {
+		fmt.Println("The user generated from the JWT:")
+		fmt.Println(claims.FirstName)
+		fmt.Println(claims.LastName)
+		fmt.Println(claims.StandardClaims.Subject)
+
+		return true
+	}
+
+	return false
+
 }

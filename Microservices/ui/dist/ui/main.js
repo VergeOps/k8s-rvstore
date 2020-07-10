@@ -46,6 +46,7 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 };
 
 
+
 var ApiService = /** @class */ (function () {
     function ApiService(http) {
         this.http = http;
@@ -59,10 +60,22 @@ var ApiService = /** @class */ (function () {
     }
     //endpoint = environment.apiEndpoint;
     ApiService.prototype.getProducts = function () {
-        return this.http.get(this.endpoint + "products/");
+        return this.http.get(this.endpoint + "/products/");
     };
     ApiService.prototype.getOrders = function () {
-        return this.http.get(this.endpoint + "orders/");
+        return this.http.get(this.endpoint + "/orders/");
+    };
+    ApiService.prototype.login = function () {
+        return this.http.get(this.endpoint + "/auth/login");
+    };
+    ApiService.prototype.accessSecure = function (token) {
+        console.log("Using token: " + token);
+        var httpOptions = {
+            headers: new _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpHeaders"]({
+                'Authorization': token
+            })
+        };
+        return this.http.get(this.endpoint + "/products/secure", httpOptions);
     };
     ApiService = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])(),
@@ -119,7 +132,7 @@ var AppRoutingModule = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<!--The content below is only a placeholder and can be replaced.-->\n<div style=\"text-align:center\">\n  <h1>\n    Welcome to RV Store!\n  </h1>\n</div>\n\n<h1>Products</h1>\n<div class=\"row\">\n  <div *ngFor=\"let product of products\">\n    <div class=\"col-sm-2\">\n      <div class=\"card\" style=\"width: 18rem;\">\n        <img class=\"card-img-top\" src=\"{{product.image}}\" alt=\"Card image cap\">\n        <div class=\"card-body\">\n          <h5 class=\"card-title\">{{product.name}}</h5>\n          <p class=\"card-text\">{{product.description}}</p>\n          <h4>{{product.price | currency}}</h4>\n          <a href=\"#\" class=\"btn btn-primary\">Buy It</a>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n\n<h1>Orders</h1>\n<p><a href=\"#\" (click)=\"updateInterval(10)\">10</a> | <a href=\"#\" (click)=\"updateInterval(30)\">30</a> | <a href=\"#\" (click)=\"updateInterval(60)\">60</a> | <a href=\"#\" (click)=\"updateInterval(120)\">120</a> seconds <i *ngIf=\"orders.length == 0\" class=\"fas fa-sync fa-spin\"></i> {{loading}}</p>\n<table class=\"table table-striped\">\n    <thead>\n      <tr>\n        <th scope=\"col\">ID</th>\n        <th scope=\"col\">Date</th>\n        <th scope=\"col\">Customer</th>\n        <th scope=\"col\">Items</th>\n        <th scope=\"col\">Subtotal</th>\n        <th scope=\"col\">Tax</th>\n        <th scope=\"col\">Total</th>\n      </tr>\n    </thead>\n    <tbody>\n      <tr *ngFor=\"let order of orders\">\n        <th scope=\"row\">{{order.id}}</th>\n        <td>{{order.orderDate | date: 'medium'}}</td>\n        <td>{{order.customerName}}</td>\n        <td><p *ngFor=\"let item of order.items\">\n          {{item.name}} - {{item.price | currency}}  \n        </p></td>\n        <td>{{order.subTotal | currency}}</td>\n        <td>{{order.tax | currency}}</td>\n        <td><strong>{{order.total | currency}}</strong></td>\n      </tr>\n    </tbody>\n  </table>\n\n  Backend host name: <input type=\"text\" size=\"100\" [(ngModel)]=\"backendUrl\"> <button class=\"btn btn-primary\" (click)=\"updateBackend()\">Update</button> {{message}}\n\n<router-outlet></router-outlet>"
+module.exports = "<!--The content below is only a placeholder and can be replaced.-->\n<div style=\"text-align:center\">\n  <h1>\n    Welcome to RV Store!\n  </h1>\n</div>\n\n<div><button class=\"btn btn-primary\" (click)=\"login()\">Login</button>\n<div *ngIf=\"jwt\">{{jwt.access_token}}</div>\n</div>\n<div>\n<button class=\"btn btn-warn\" (click)=\"accessSecure(jwt.access_token)\">Access Secure Endpoint</button>\n<div>{{secureResponse}}</div>\n</div>\n\n<h1>Products</h1>\n<div class=\"row\">\n  <div *ngFor=\"let product of products\">\n    <div class=\"col-sm-2\">\n      <div class=\"card\" style=\"width: 18rem;\">\n        <img class=\"card-img-top\" src=\"{{product.image}}\" alt=\"Card image cap\">\n        <div class=\"card-body\">\n          <h5 class=\"card-title\">{{product.name}}</h5>\n          <p class=\"card-text\">{{product.description}}</p>\n          <h4>{{product.price | currency}}</h4>\n          <a href=\"#\" class=\"btn btn-primary\">Buy It</a>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n\n<h1>Orders</h1>\n<p><a href=\"#\" (click)=\"updateInterval(10)\">10</a> | <a href=\"#\" (click)=\"updateInterval(30)\">30</a> | <a href=\"#\" (click)=\"updateInterval(60)\">60</a> | <a href=\"#\" (click)=\"updateInterval(120)\">120</a> seconds <i *ngIf=\"orders.length == 0\" class=\"fas fa-sync fa-spin\"></i> {{loading}}</p>\n<table class=\"table table-striped\">\n    <thead>\n      <tr>\n        <th scope=\"col\">ID</th>\n        <th scope=\"col\">Date</th>\n        <th scope=\"col\">Customer</th>\n        <th scope=\"col\">Items</th>\n        <th scope=\"col\">Subtotal</th>\n        <th scope=\"col\">Tax</th>\n        <th scope=\"col\">Total</th>\n      </tr>\n    </thead>\n    <tbody>\n      <tr *ngFor=\"let order of orders\">\n        <th scope=\"row\">{{order.id}}</th>\n        <td>{{order.orderDate | date: 'medium'}}</td>\n        <td>{{order.customerName}}</td>\n        <td><p *ngFor=\"let item of order.items\">\n          {{item.name}} - {{item.price | currency}}  \n        </p></td>\n        <td>{{order.subTotal | currency}}</td>\n        <td>{{order.tax | currency}}</td>\n        <td><strong>{{order.total | currency}}</strong></td>\n      </tr>\n    </tbody>\n  </table>\n<form>\n  Backend host name: <input name=\"backendUrl\" type=\"text\" size=\"100\" [(ngModel)]=\"backendUrl\"> <button type=\"submit\" class=\"btn btn-primary\" (click)=\"updateBackend()\">Update</button> {{message}}\n</form>\n<router-outlet></router-outlet>"
 
 /***/ }),
 
@@ -147,6 +160,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _api_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./api.service */ "./src/app/api.service.ts");
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var _jwt__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./jwt */ "./src/app/jwt.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -159,11 +173,13 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
 var AppComponent = /** @class */ (function () {
     function AppComponent(apiService) {
         this.apiService = apiService;
         this.interval = 60;
         this.backendUrl = this.apiService.endpoint;
+        this.jwt = new _jwt__WEBPACK_IMPORTED_MODULE_3__["Jwt"]();
     }
     AppComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -179,6 +195,21 @@ var AppComponent = /** @class */ (function () {
         var _this = this;
         this.apiService.getProducts().subscribe(function (products) {
             _this.products = products;
+        });
+    };
+    AppComponent.prototype.login = function () {
+        var _this = this;
+        this.apiService.login().subscribe(function (jwt) {
+            _this.jwt = jwt;
+        });
+    };
+    AppComponent.prototype.accessSecure = function (token) {
+        var _this = this;
+        this.apiService.accessSecure(token).subscribe(function (response) {
+            _this.secureResponse = JSON.stringify(response);
+        }, function (err) {
+            console.log(err);
+            _this.secureResponse = JSON.stringify(err);
         });
     };
     AppComponent.prototype.getOrders = function () {
@@ -268,6 +299,27 @@ var AppModule = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "./src/app/jwt.ts":
+/*!************************!*\
+  !*** ./src/app/jwt.ts ***!
+  \************************/
+/*! exports provided: Jwt */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Jwt", function() { return Jwt; });
+var Jwt = /** @class */ (function () {
+    function Jwt() {
+        this.access_token = "";
+    }
+    return Jwt;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/environments/environment.ts":
 /*!*****************************************!*\
   !*** ./src/environments/environment.ts ***!
@@ -330,7 +382,7 @@ Object(_angular_platform_browser_dynamic__WEBPACK_IMPORTED_MODULE_1__["platformB
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Users/tsolley/Documents/OneDrive - VergeOps/Clients/DI/Docker k8s 5 day/Microservices/ui/src/main.ts */"./src/main.ts");
+module.exports = __webpack_require__(/*! /Users/tsolley/Google Drive/Clients/DI/Docker k8s 5 day/Microservices/ui/src/main.ts */"./src/main.ts");
 
 
 /***/ })

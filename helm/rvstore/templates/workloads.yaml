@@ -75,6 +75,44 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  name: {{ .Values.services.authApi.name }}
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: {{ .Values.services.authApi.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.services.authApi.label }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.services.authApi.label }}
+    spec:
+      containers:
+      - name: rvstore-auth-api
+        image: {{ .Values.services.authApi.image }}
+        imagePullPolicy: Always
+        envFrom:
+        - configMapRef:
+            name: {{ .Release.Name }}-workload-config
+        ports:
+        - containerPort: {{ .Values.services.authApi.port }}
+        readinessProbe:
+          httpGet:
+            path: /auth/login
+            port: {{ .Values.services.authApi.port }}
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 2
+          failureThreshold: 1
+        resources:
+          limits:
+            cpu: {{ .Values.services.authApi.resources.limits }}
+          requests:
+            cpu: {{ .Values.services.authApi.resources.requests }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
   name: {{ .Values.services.gateway.name }}
   namespace: {{ .Values.namespace }}
 spec:

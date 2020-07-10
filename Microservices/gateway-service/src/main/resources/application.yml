@@ -10,7 +10,13 @@ zuul:
   routes:
     products:
       path: /products/**
+      sensitiveHeaders: Cookie,Set-Cookie
       url: http://localhost:9001/products
     orders:
       path: /orders/**
+      sensitiveHeaders: Cookie,Set-Cookie
       url: http://localhost:9002/orders
+    auth:
+      path: /auth/**
+      sensitiveHeaders: Cookie,Set-Cookie
+      url: http://localhost:9003/auth

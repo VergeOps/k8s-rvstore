@@ -63,7 +63,40 @@ spec:
           periodSeconds: 10
           successThreshold: 2
           failureThreshold: 1
-
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-api-deployment
+  labels:
+    app: auth-api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: auth-api
+  template:
+    metadata:
+      labels:
+        app: auth-api
+    spec:
+      containers:
+      - name: rvstore-auth-api
+        image: vergeops/k8s-rvstore-auth-api:1.0
+        imagePullPolicy: Always
+        envFrom:
+        - configMapRef:
+            name: workload-config
+        ports:
+        - containerPort: 9003
+        readinessProbe:
+          httpGet:
+            path: /auth/login
+            port: 9003
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 2
+          failureThreshold: 1
 ---
 apiVersion: apps/v1
 kind: Deployment

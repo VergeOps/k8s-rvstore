@@ -12,6 +12,11 @@ services:
      - "9000:9000"
     environment:
      - SPRING_PROFILES_ACTIVE=compose
+  rvstore-auth-api:
+    image: "vergeops/k8s-rvstore-auth-api:1.0"
+    restart: always
+    ports:
+     - "9003:9003"
   rvstore-product-api:
     image: "vergeops/k8s-rvstore-product-api:1.0"
     restart: always

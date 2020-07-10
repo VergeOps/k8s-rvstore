@@ -4,6 +4,7 @@ import { Product } from './product';
 
 import { Observable } from 'rxjs';
 import { interval } from 'rxjs';
+import { Jwt } from './jwt';
 
 @Component({
   selector: 'app-root',
@@ -17,6 +18,8 @@ export class AppComponent implements OnInit {
   interval: number = 60;
   public backendUrl = this.apiService.endpoint;
   public message;
+  public jwt: Jwt = new Jwt();
+  public secureResponse: string;
 
   constructor(private apiService: ApiService) { }
 
@@ -35,6 +38,26 @@ export class AppComponent implements OnInit {
     this.apiService.getProducts().subscribe(
       products => {
         this.products = products;
+      }
+    );
+  }
+
+  login() {
+    this.apiService.login().subscribe(
+      jwt => {
+        this.jwt = jwt;
+      }
+    );
+  }
+
+  accessSecure(token: string) {
+    this.apiService.accessSecure(token).subscribe(
+      response => {
+        this.secureResponse = JSON.stringify(response);
+      },
+      err => {
+        console.log(err);
+        this.secureResponse = JSON.stringify(err);
       }
     );
   }

@@ -8,5 +8,9 @@ deploy-cluster-autoscaler:
 	kubectl apply -f cluster-autoscaler-autodiscover.yaml
 	kubectl -n kube-system annotate deployment.apps/cluster-autoscaler cluster-autoscaler.kubernetes.io/safe-to-evict="false"
 
+deploy-cloudwatch-logs:
+	kubectl apply -f cloudwatch-insights.yaml
+	eksctl utils update-cluster-logging --enable-types all --profile vergeops --region us-east-1 --cluster rvstore --approve
+
 delete-cluster:
 	eksctl delete cluster --name rvstore --region us-east-1 --profile vergeops

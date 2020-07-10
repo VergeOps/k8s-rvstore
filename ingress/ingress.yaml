@@ -19,3 +19,7 @@ spec:
         backend:
           serviceName: rvstore-order-api
           servicePort: 9002
+      - path: /auth
+        backend:
+          serviceName: rvstore-auth-api
+          servicePort: 9003
