@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: troubleshooting
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-pod
+  namespace: troubleshooting
+  labels:
+    app: nginx
+spec:
+  containers:
+  - name: nginx-container
+    image: ngnix:latest
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: nginx-service
+  namespace: troubleshooting
+spec:
+  selector:
+    apps: nginx
+  ports:
+  - protocol: TCP
+    port: 80
+    nodePort: 30081
+  type: NodePort
