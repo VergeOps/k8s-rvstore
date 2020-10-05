@@ -22,7 +22,7 @@ spec:
     - wget
     - "-O"
     - "/work-dir/index.html"
-    - http://kubernetes.io
+    - http://www.cnn.com
     volumeMounts:
     - name: workdir
       mountPath: "/work-dir"
