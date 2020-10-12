@@ -1,31 +1,31 @@
 version: '3'
 services:
   ui:
-    image: "vergeops/k8s-rvstore-ui:1.0"
+    build: Microservices/ui
     restart: always
     ports:
      - "80:80"
   rvstore-api-gateway:
-    image: "vergeops/k8s-rvstore-api-gateway:1.0"
+    build: Microservices/gateway-service
     restart: always
     ports:
      - "9000:9000"
     environment:
      - SPRING_PROFILES_ACTIVE=compose
   rvstore-auth-api:
-    image: "vergeops/k8s-rvstore-auth-api:1.0"
+    build: Microservices/auth-api
     restart: always
     ports:
      - "9003:9003"
   rvstore-product-api:
-    image: "vergeops/k8s-rvstore-product-api:1.0"
+    build: Microservices/product-api
     restart: always
     ports:
      - "9001:9001"
     environment:
      - SPRING_PROFILES_ACTIVE=compose
   rvstore-order-api:
-    image: "vergeops/k8s-rvstore-order-api:1.0"
+    build: Microservices/order-api
     restart: always
     ports:
      - "9002:9002"
@@ -40,6 +40,6 @@ services:
      - MONGO_INITDB_ROOT_USERNAME=mongoadmin
      - MONGO_INITDB_ROOT_PASSWORD=secret
   rvstore-order-simulator:
-    image: "vergeops/k8s-rvstore-order-simulator:1.0"
+    build: Microservices/order-simulator
     environment:
      - SPRING_PROFILES_ACTIVE=compose
