@@ -23,3 +23,7 @@ spec:
         backend:
           serviceName: rvstore-auth-api
           servicePort: 9003
+      - path: /
+        backend:
+          serviceName: rvstore-ui
+          servicePort: 80
