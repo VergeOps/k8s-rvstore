@@ -1,69 +1,148 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to RV Store!
-  </h1>
-</div>
+<nav class="navbar navbar-dark bg-primary">
+  <h1 style="color: white;">RV Store</h1>
+</nav>
+<div class="container-fluid">
+  <h4>Welcome to the RV Store, a demonstration application meant for learning Docker and Kubernetes.</h4>
+  <p>
+    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample"
+      aria-expanded="false" aria-controls="collapseExample">
+      Expand Instructions
+    </button>
+  </p>
+  <div class="collapse" id="collapseExample">
+    <div class="card card-body">
+      <h4>This application is broken down into several microservices to help you learn:</h4>
+      <ul>
+        <li>A UI service: You're looking at it</li>
+        <li>A product API service: Sends back a list of products</li>
+        <li>An authentication API service: Send back an OAuth token (a JSON Web Token, or JWT)</li>
+        <li>An order API service: Receives orders and sends back a list of orders</li>
+        <li>An order simulator: Runs as a background service and submits orders periodically</li>
+        <li>A gateway service: Acts as a central entrypoint to the API, and routes requests to the auth, product, and
+          order services based on the HTTP path</li>
+        <li>A MongoDB database to store orders</li>
+      </ul>
 
-<div><button class="btn btn-primary" (click)="login()">Login</button>
-  <div *ngIf="jwt">{{jwt.access_token}}</div>
-</div>
-<div>
-  <button class="btn btn-warn" (click)="accessSecure(jwt.access_token)">Access Secure Endpoint</button>
-  <div>{{secureResponse}}</div>
-</div>
+      <h4>Your goals are (in order of importance)</h4>
+      <ol>
+        <li>Set up the application to run in Kubernetes. For this hackathon, Minikube or Docker Kubernetes for Desktop
+          is fine.</li>
+        <li>Centralize configurations (environment variables)</li>
+        <li>Put any sensitive information into secrets</li>
+        <li>Ensure that only public services are accessible outside the cluster. These are the gateway service and the
+          UI.</li>
+        <li>Make the app fault-tolerant
+          <ul>
+            <li>Make services redundant
+            <li>Set up probes
+            <li>Try to break it!
+          </ul>
+        </li>
+        <li>For MongoDB, set up a volume mapping to your hard drive so that the MongoDB pod can be thrown out and not
+          lose orders.</li>
+        <li>Once everything is running, release version 2.0 of the UI. Once verified, you’ve realized that there’s a
+          problem (the styling is hideous). Try rolling back.</li>
+        <li>If we covered HorizontalPodAutoscaler in this class, try adding scaling to one of your deployments, like the
+          product API.</li>
+      </ol>
+      <h4>Architecture Diagram</h4>
+      <img src="/assets/diagram.png" width="100%" />
+    </div>
+  </div>
 
-<h1>Products</h1>
-<div class="row">
-  <div *ngFor="let product of products">
-    <div class="col-sm-2">
-      <div class="card" style="width: 18rem;">
-        <img class="card-img-top" src="{{product.image}}" alt="Card image cap">
-        <div class="card-body">
-          <h5 class="card-title">{{product.name}}</h5>
-          <p class="card-text">{{product.description}}</p>
-          <h4>{{product.price | currency}}</h4>
-          <a href="#" class="btn btn-primary">Buy It</a>
+
+
+  <div class="card" style="margin-top: 2em;">
+    <h5 class="card-header">Step 1: Set the API base URL</h5>
+    <div class="card-body">
+      <p>Before any data will show up, you must tell this UI application where to access the API. The port number is up to you, so update the text box below and click update.</p>
+      <form>
+        Backend host name: <input name="backendUrl" type="text" size="100" [(ngModel)]="backendUrl"> <button
+          type="submit" class="btn btn-primary" (click)="updateBackend()">Update</button>
+      </form>
+      <div [innerHTML]="message"></div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top: 2em;">
+    <h5 class="card-header">Step 2: Test product service</h5>
+    <div class="card-body">
+      <div class="row">
+        <div *ngFor="let product of products">
+          <div class="col-sm-2">
+            <div class="card" style="width: 18rem;">
+              <img class="card-img-top" src="{{product.image}}" alt="Card image cap">
+              <div class="card-body">
+                <h5 class="card-title">{{product.name}}</h5>
+                <p class="card-text">{{product.description}}</p>
+                <h4>{{product.price | currency}}</h4>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 
-<h1>Orders</h1>
-<p><a href="#" (click)="updateInterval(10)">10</a> | <a href="#" (click)="updateInterval(30)">30</a> | <a href="#"
-    (click)="updateInterval(60)">60</a> | <a href="#" (click)="updateInterval(120)">120</a> seconds <i
-    *ngIf="orders.length == 0" class="fas fa-sync fa-spin"></i> {{loading}}</p>
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th scope="col">ID</th>
-      <th scope="col">Date</th>
-      <th scope="col">Customer</th>
-      <th scope="col">Items</th>
-      <th scope="col">Subtotal</th>
-      <th scope="col">Tax</th>
-      <th scope="col">Total</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let order of orders">
-      <th scope="row">{{order.id}}</th>
-      <td>{{order.orderDate | date: 'medium'}}</td>
-      <td>{{order.customerName}}</td>
-      <td>
-        <p *ngFor="let item of order.items">
-          {{item.name}} - {{item.price | currency}}
-        </p>
-      </td>
-      <td>{{order.subTotal | currency}}</td>
-      <td>{{order.tax | currency}}</td>
-      <td><strong>{{order.total | currency}}</strong></td>
-    </tr>
-  </tbody>
-</table>
-<form>
-  Backend host name: <input name="backendUrl" type="text" size="100" [(ngModel)]="backendUrl"> <button type="submit"
-    class="btn btn-primary" (click)="updateBackend()">Update</button> {{message}}
-</form>
-<router-outlet></router-outlet>
+  <div class="card" style="margin-top: 2em;">
+    <h5 class="card-header">Step 3: Test auth service</h5>
+    <div class="card-body">
+      <p>The login button sends a request to the auth API and retrieves a JWT. The JWT is displayed on screen below the
+        button.</p>
+      <div><button class="btn btn-primary" (click)="login()">Login</button>
+        <div *ngIf="jwt">
+          <strong>JWT:</strong> <span class="badge badge-pill badge-primary">{{jwt.access_token}}</span>
+          </div>
+      </div>
+      <p>Once a JWT has been retrieved, then this next button should work and you should see a success message on
+        screen.
+        NOTE: This button won't work until the product service is running.</p>
+      <div>
+        <button class="btn btn-warn" (click)="accessSecure(jwt.access_token)">Access Secure Endpoint</button>
+        <div>
+          <strong>Response from protected service:</strong> {{secureResponse}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top: 2em;">
+    <h5 class="card-header">Step 4: Test order service</h5>
+    <div class="card-body">
+      <p><a href="#" (click)="updateInterval(10)">10</a> | <a href="#" (click)="updateInterval(30)">30</a> | <a href="#"
+          (click)="updateInterval(60)">60</a> | <a href="#" (click)="updateInterval(120)">120</a> seconds <i
+          *ngIf="orders.length == 0" class="fas fa-sync fa-spin"></i> {{loading}}</p>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Date</th>
+            <th scope="col">Customer</th>
+            <th scope="col">Items</th>
+            <th scope="col">Subtotal</th>
+            <th scope="col">Tax</th>
+            <th scope="col">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let order of orders">
+            <th scope="row">{{order.id}}</th>
+            <td>{{order.orderDate | date: 'medium'}}</td>
+            <td>{{order.customerName}}</td>
+            <td>
+              <p *ngFor="let item of order.items">
+                {{item.name}} - {{item.price | currency}}
+              </p>
+            </td>
+            <td>{{order.subTotal | currency}}</td>
+            <td>{{order.tax | currency}}</td>
+            <td><strong>{{order.total | currency}}</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+
+  <router-outlet></router-outlet>
+</div>

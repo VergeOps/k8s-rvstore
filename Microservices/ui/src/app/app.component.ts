@@ -73,7 +73,12 @@ export class AppComponent implements OnInit {
 
   updateBackend() {
     this.apiService.endpoint = this.backendUrl;
-    this.message = "OK!";
+    this.message = `Making calls to:<br/>
+      Product API <span class=\"badge badge-pill badge-primary\">${this.apiService.endpoint}products</span><br/>
+      Auth API <span class=\"badge badge-pill badge-primary\">${this.apiService.endpoint}auth</span><br/>
+      Order API <span class=\"badge badge-pill badge-primary\">${this.apiService.endpoint}orders</span>
+      `;
+    
     this.getProducts();
     this.getOrders();
   }

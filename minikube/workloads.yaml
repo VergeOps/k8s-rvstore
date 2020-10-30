@@ -19,16 +19,25 @@ spec:
         image: vergeops/k8s-rvstore-ui:1.0
         imagePullPolicy: Always
         ports:
-        - containerPort: 80
+        - name: ui-port
+          containerPort: 80
+        livenessProbe:
+          httpGet:
+            path: /
+            port: ui-port
         readinessProbe:
           httpGet:
             path: /
-            port: 80
-          initialDelaySeconds: 5
+            port: ui-port
           periodSeconds: 10
           successThreshold: 2
           failureThreshold: 1
-
+        startupProbe:
+          httpGet:
+            path: /
+            port: health-port
+          periodSeconds: 10
+          failureThreshold: 5
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -54,15 +63,25 @@ spec:
         - configMapRef:
             name: workload-config
         ports:
-        - containerPort: 9001
+        - name: product-port
+          containerPort: 9001
+        livenessProbe:
+          httpGet:
+            path: /products/
+            port: product-port
         readinessProbe:
           httpGet:
             path: /products/
-            port: 9001
-          initialDelaySeconds: 10
+            port: product-port
           periodSeconds: 10
           successThreshold: 2
           failureThreshold: 1
+        startupProbe:
+          httpGet:
+            path: /products/
+            port: product-port
+          periodSeconds: 10
+          failureThreshold: 5
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -88,15 +107,25 @@ spec:
         - configMapRef:
             name: workload-config
         ports:
-        - containerPort: 9003
+        - name: auth-port
+          containerPort: 9003
+        livenessProbe:
+          httpGet:
+            path: /auth/login
+            port: auth-port
         readinessProbe:
           httpGet:
             path: /auth/login
-            port: 9003
-          initialDelaySeconds: 10
+            port: auth-port
           periodSeconds: 10
           successThreshold: 2
           failureThreshold: 1
+        startupProbe:
+          httpGet:
+            path: /auth/login
+            port: auth-port
+          periodSeconds: 10
+          failureThreshold: 5
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -122,15 +151,25 @@ spec:
         - configMapRef:
             name: workload-config
         ports:
-        - containerPort: 9002
+        - name: order-port
+          containerPort: 9002
+        livenessProbe:
+          httpGet:
+            path: /orders
+            port: order-port
         readinessProbe:
           httpGet:
             path: /orders
-            port: 9002
-          initialDelaySeconds: 10
+            port: order-port
           periodSeconds: 10
           successThreshold: 2
           failureThreshold: 1
+        startupProbe:
+          httpGet:
+            path: /orders
+            port: order-port
+          periodSeconds: 10
+          failureThreshold: 5
 
 ---
 apiVersion: apps/v1
@@ -178,14 +217,26 @@ spec:
       - name: rvstore-api-gateway
         image: vergeops/k8s-rvstore-api-gateway:1.0
         imagePullPolicy: Always
+        ports:
+        - name: gw-port
+          containerPort: 9000
         envFrom:
         - configMapRef:
             name: workload-config
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: gw-port
         readinessProbe:
           httpGet:
             path: /health
-            port: 9000
-          initialDelaySeconds: 10
+            port: gw-port
           periodSeconds: 10
           successThreshold: 2
           failureThreshold: 1
+        startupProbe:
+          httpGet:
+            path: /health
+            port: gw-port
+          periodSeconds: 10
+          failureThreshold: 5
