@@ -2,8 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ui-deployment
-  labels:
-    app: ui
 spec:
   replicas: 2
   selector:
@@ -17,7 +15,6 @@ spec:
       containers:
       - name: ui
         image: vergeops/k8s-rvstore-ui:1.0
-        imagePullPolicy: Always
         ports:
         - name: ui-port
           containerPort: 80
@@ -43,8 +40,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: product-api-deployment
-  labels:
-    app: product-api
 spec:
   replicas: 2
   selector:
@@ -55,16 +50,22 @@ spec:
       labels:
         app: product-api
     spec:
+      volumes:
+      - name: products-volume
+        configMap:
+          name: products-config   
       containers:
       - name: rvstore-product-api
         image: vergeops/k8s-rvstore-product-api:1.0
-        imagePullPolicy: Always
-        envFrom:
-        - configMapRef:
-            name: workload-config
         ports:
         - name: product-port
           containerPort: 9001
+        volumeMounts:
+        - name: products-volume
+          mountPath: /data/products
+        env:
+        - name: PRODUCT_FILE_LOCATION
+          value: /data/products
         livenessProbe:
           httpGet:
             path: /products/
@@ -87,8 +88,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: auth-api-deployment
-  labels:
-    app: auth-api
 spec:
   replicas: 2
   selector:
@@ -102,10 +101,6 @@ spec:
       containers:
       - name: rvstore-auth-api
         image: vergeops/k8s-rvstore-auth-api:1.0
-        imagePullPolicy: Always
-        envFrom:
-        - configMapRef:
-            name: workload-config
         ports:
         - name: auth-port
           containerPort: 9003
@@ -131,8 +126,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: order-api-deployment
-  labels:
-    app: order-api
 spec:
   replicas: 2
   selector:
@@ -146,7 +139,6 @@ spec:
       containers:
       - name: rvstore-order-api
         image: vergeops/k8s-rvstore-order-api:1.0
-        imagePullPolicy: Always
         envFrom:
         - configMapRef:
             name: workload-config
@@ -176,8 +168,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: order-simulator-deployment
-  labels:
-    app: order-simulator
 spec:
   replicas: 1
   selector:
@@ -191,7 +181,6 @@ spec:
       containers:
       - name: rvstore-order-simulator
         image: vergeops/k8s-rvstore-order-simulator:1.0
-        imagePullPolicy: Always
         envFrom:
         - configMapRef:
             name: workload-config
@@ -201,8 +190,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: api-gateway-deployment
-  labels:
-    app: api-gateway
 spec:
   replicas: 2
   selector:
@@ -216,7 +203,6 @@ spec:
       containers:
       - name: rvstore-api-gateway
         image: vergeops/k8s-rvstore-api-gateway:1.0
-        imagePullPolicy: Always
         ports:
         - name: gw-port
           containerPort: 9000

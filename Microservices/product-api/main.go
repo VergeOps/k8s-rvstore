@@ -3,7 +3,9 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/http"
+	"os"
 
 	"github.com/dgrijalva/jwt-go"
 )
@@ -27,25 +29,34 @@ type RVClaims struct {
 var products []Product
 
 func main() {
-	products = addData()
+	fmt.Println("Starting up")
 
 	http.HandleFunc("/products", handler)
 	http.HandleFunc("/products/", handler)
 	http.HandleFunc("/products/secure", secureHandler)
 
 	http.ListenAndServe(":9001", nil)
+	fmt.Println("The product API server is listening on port 9001")
 }
 
 // "handler" is our handler function. It has to follow the function signature of a ResponseWriter and Request type
 // as the arguments.
 func handler(w http.ResponseWriter, r *http.Request) {
 	enableCors(&w)
+
+	fmt.Println("Loading up products from products.json file")
+	readProductsFile()
+
 	response, err := json.Marshal(products)
 	if err != nil {
-		//nothing
+		fmt.Println("Unable to marshal products to send back")
 	}
 	fmt.Println("Received a request for product data")
-	fmt.Fprintf(w, string(response))
+	if len(products) == 0 {
+		fmt.Fprintf(w, "There are no products in the service. Did you correctly provide the products.json file to the pod?")
+	} else {
+		fmt.Fprintf(w, string(response))
+	}
 }
 
 func secureHandler(w http.ResponseWriter, r *http.Request) {
@@ -72,53 +83,24 @@ func enableCors(w *http.ResponseWriter) {
 	(*w).Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 }
 
-func addData() []Product {
-	product := Product{
-		ID:          "sewer-hose",
-		Name:        "Stinky Slinky Sewer Hose",
-		Price:       19.99,
-		Description: "Oh what fun times you'll have with this! Be sure to stock up on gloves and disinfectant soap before checkout!",
-		Image:       "https://campaddict.com/wp-content/uploads/RV-sewer-hose-in-use.jpg",
+func readProductsFile() {
+	location := os.Getenv("PRODUCT_FILE_LOCATION")
+	fmt.Println("Reading file from: " + location + "/products.json")
+	data, err := ioutil.ReadFile(location + "/products.json")
+	if err != nil {
+		fmt.Println("File reading error", err)
+		fmt.Println("Did you correctly provide the products.json file in a ConfigMap? Try getting into the pod and looking around the file system for this file.")
+		fmt.Println("kubectl exec -it <pod name> -- bash")
+		return
 	}
-	products = append(products, product)
+	fmt.Println("Contents of file:", string(data))
 
-	product = Product{
-		ID:          "electric-jacks",
-		Name:        "Six-Point Auto-Leveling Jacks",
-		Price:       3499.99,
-		Description: "Six-point electric auto-leveling jacks for your travel trailer or fifth wheel. No more yelling at your spouse for getting the number of wood blocks wrong! Just push a button and walk away!",
-		Image:       "https://cdn3.volusion.com/dxylq.nruds/v/vspfiles/photos/8735-2.jpg?1536058347",
+	products = make([]Product, 0)
+	err = json.Unmarshal([]byte(data), &products)
+	if err != nil {
+		fmt.Println("Error marshalling products", err)
+		return
 	}
-	products = append(products, product)
-
-	product = Product{
-		ID:          "heated-hose",
-		Name:        "Heated Fresh Water Hose",
-		Price:       89.99,
-		Description: "Heated hose for those freezing nights",
-		Image:       "https://i5.walmartimages.com/asr/9b926f3b-cdd5-4bcc-b09b-ef44d461c023_2.e4c509076a08564a97b13b61ea0c45da.jpeg",
-	}
-	products = append(products, product)
-
-	product = Product{
-		ID:          "50-amp-extension-cord",
-		Name:        "25' 50 amp Extension Cord",
-		Price:       89.99,
-		Description: "Quit parking your RV based on where the post is!",
-		Image:       "https://images-na.ssl-images-amazon.com/images/I/71t4SHO3EML._SX425_.jpg",
-	}
-	products = append(products, product)
-
-	product = Product{
-		ID:          "5th-wheel-tripod",
-		Name:        "5th Wheel Tripod Stabilizer",
-		Price:       127.49,
-		Description: "This rig won't be a rockin' when you have this tripod stabilizer on your 5th wheel hitch.",
-		Image:       "https://www.etrailer.com/static/images/faq/review-ultrafab-5th-wheel-king-pin-tripod-stabilizer-uf19-950001_644.jpg",
-	}
-	products = append(products, product)
-
-	return products
 }
 
 // VerifyJwt validates that a token is valid

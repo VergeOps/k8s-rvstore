@@ -51,19 +51,6 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name: rvstore-orders-mongodb
-spec:
-  type: ClusterIP
-  selector:
-    app: order-mongodb
-  ports:
-  - protocol: TCP
-    port: 27017
-
----
-kind: Service
-apiVersion: v1
-metadata:
   name: rvstore-api-gateway
 spec:
   type: NodePort

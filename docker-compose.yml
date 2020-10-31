@@ -1,4 +1,4 @@
-version: '3'
+version: '3.8'
 services:
   ui:
     build: Microservices/ui
@@ -23,7 +23,9 @@ services:
     ports:
      - "9001:9001"
     environment:
-     - SPRING_PROFILES_ACTIVE=compose
+     - PRODUCT_FILE_LOCATION=/data/products
+    volumes:
+      - product-data:/data/products
   rvstore-order-api:
     build: Microservices/order-api
     restart: always
@@ -43,3 +45,10 @@ services:
     build: Microservices/order-simulator
     environment:
      - SPRING_PROFILES_ACTIVE=compose
+volumes:
+  product-data:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: "/Users/tsolley/Google\ Drive/Clients/DI/Docker\ k8s\ 5\ day/rvstore_hackathon"

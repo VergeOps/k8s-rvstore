@@ -2,8 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: order-mongodb-deployment
-  labels:
-    app: order-mongodb
 spec:
   replicas: 1
   selector:
@@ -18,8 +16,8 @@ spec:
       - name: rvstore-orders-mongodb
         image: mongo
         envFrom:
-        - configMapRef:
-            name: mongodb-config
+        - secretRef:
+            name: mongodb-secret
 # Commented out until you update the path below to be valid.
 #        volumeMounts:
 #        - mountPath: /data/db
@@ -30,3 +28,16 @@ spec:
 #      - name: mongo-volume
 #        hostPath:
 #          path: /Users/tsolley/Desktop/Temp/rvstore-mongodb
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: rvstore-orders-mongodb
+spec:
+  type: ClusterIP
+  selector:
+    app: order-mongodb
+  ports:
+  - protocol: TCP
+    port: 27017
