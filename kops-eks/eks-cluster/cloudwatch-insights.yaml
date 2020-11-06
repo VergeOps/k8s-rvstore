@@ -63,7 +63,7 @@ data:
   cwagentconfig.json: |
     {
       "agent": {
-        "region": "us-east-1"
+        "region": "us-west-2"
       },
       "logs": {
         "metrics_collected": {
@@ -175,7 +175,7 @@ spec:
 apiVersion: v1
 data:
   cluster.name: rvstore
-  logs.region: us-east-1
+  logs.region: us-west-2
 kind: ConfigMap
 metadata:
   name: cluster-info

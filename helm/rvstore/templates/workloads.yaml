@@ -16,7 +16,7 @@ spec:
       containers:
       - name: ui
         image: {{ .Values.services.ui.image }}
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: {{ .Values.services.ui.port }}
         readinessProbe:
@@ -49,15 +49,22 @@ spec:
       labels:
         app: {{ .Values.services.productApi.label }}
     spec:
+      volumes:
+      - name: products-volume
+        configMap:
+          name: {{ .Release.Name }}-products-config
       containers:
       - name: rvstore-product-api
         image: {{ .Values.services.productApi.image }}
-        imagePullPolicy: Always
-        envFrom:
-        - configMapRef:
-            name: {{ .Release.Name }}-workload-config
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: {{ .Values.services.productApi.port }}
+        volumeMounts:
+        - name: products-volume
+          mountPath: /data/products
+        env:
+        - name: PRODUCT_FILE_LOCATION
+          value: /data/products
         readinessProbe:
           httpGet:
             path: /products/
@@ -90,7 +97,7 @@ spec:
       containers:
       - name: rvstore-auth-api
         image: {{ .Values.services.authApi.image }}
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         envFrom:
         - configMapRef:
             name: {{ .Release.Name }}-workload-config
@@ -128,7 +135,7 @@ spec:
       containers:
       - name: rvstore-api-gateway
         image: {{ .Values.services.gateway.image }}
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         envFrom:
         - configMapRef:
             name: {{ .Release.Name }}-workload-config
@@ -158,7 +165,7 @@ spec:
       containers:
       - name: rvstore-order-api
         image: {{ .Values.services.orderApi.image }}
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         envFrom:
         - configMapRef:
             name: {{ .Release.Name }}-workload-config
@@ -197,7 +204,7 @@ spec:
       containers:
       - name: rvstore-order-simulator
         image: {{ .Values.services.orderSimulator.image }}
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         envFrom:
         - configMapRef:
             name: {{ .Release.Name }}-workload-config

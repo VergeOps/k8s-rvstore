@@ -10,7 +10,7 @@ deploy-cluster-autoscaler:
 
 deploy-cloudwatch-logs:
 	kubectl apply -f cloudwatch-insights.yaml
-	eksctl utils update-cluster-logging --enable-types all --profile vergeops --region us-east-1 --cluster rvstore --approve
+	eksctl utils update-cluster-logging --enable-types all --profile vergeops --region us-west-2 --cluster rvstore --approve
 
 delete-cluster:
 	eksctl delete cluster --name rvstore --region us-west-2 --profile vergeops

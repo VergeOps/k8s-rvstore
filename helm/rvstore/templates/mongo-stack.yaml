@@ -13,11 +13,19 @@ spec:
       labels:
         app: {{ .Values.mongo.label }}
     spec:
+      volumes:
+      - name: mongo-volume
+        persistentVolumeClaim:
+          claimName: mongo-pvc
       containers:
       - name: rvstore-orders-mongodb
         image: {{ .Values.mongo.image }}
+        imagePullPolicy: IfNotPresent
         envFrom:
         - configMapRef:
             name: {{ .Release.Name }}-mongodb-config
         ports:
         - containerPort: 27017
+        volumeMounts:
+        - mountPath: /data/db
+          name: mongo-volume

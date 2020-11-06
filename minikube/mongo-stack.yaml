@@ -15,19 +15,20 @@ spec:
       containers:
       - name: rvstore-orders-mongodb
         image: mongo
+        imagePullPolicy: IfNotPresent
         envFrom:
         - secretRef:
             name: mongodb-secret
-# Commented out until you update the path below to be valid.
-#        volumeMounts:
-#        - mountPath: /data/db
-#          name: mongo-volume
+        volumeMounts:
+        - mountPath: /data/db
+          name: mongo-volume
         ports:
         - containerPort: 27017
-#      volumes:
-#      - name: mongo-volume
-#        hostPath:
-#          path: /Users/tsolley/Desktop/Temp/rvstore-mongodb
+      volumes:
+      - name: mongo-volume
+        persistentVolumeClaim:
+          claimName: mongo-pvc
+         
 
 ---
 kind: Service

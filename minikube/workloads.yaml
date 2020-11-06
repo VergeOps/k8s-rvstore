@@ -32,7 +32,7 @@ spec:
         startupProbe:
           httpGet:
             path: /
-            port: health-port
+            port: ui-port
           periodSeconds: 10
           failureThreshold: 5
 ---
@@ -57,6 +57,7 @@ spec:
       containers:
       - name: rvstore-product-api
         image: vergeops/k8s-rvstore-product-api:1.0
+        imagePullPolicy: IfNotPresent
         ports:
         - name: product-port
           containerPort: 9001
@@ -101,6 +102,7 @@ spec:
       containers:
       - name: rvstore-auth-api
         image: vergeops/k8s-rvstore-auth-api:1.0
+        imagePullPolicy: IfNotPresent
         ports:
         - name: auth-port
           containerPort: 9003
@@ -139,6 +141,7 @@ spec:
       containers:
       - name: rvstore-order-api
         image: vergeops/k8s-rvstore-order-api:1.0
+        imagePullPolicy: IfNotPresent
         envFrom:
         - configMapRef:
             name: workload-config
@@ -181,6 +184,7 @@ spec:
       containers:
       - name: rvstore-order-simulator
         image: vergeops/k8s-rvstore-order-simulator:1.0
+        imagePullPolicy: IfNotPresent
         envFrom:
         - configMapRef:
             name: workload-config
@@ -203,6 +207,7 @@ spec:
       containers:
       - name: rvstore-api-gateway
         image: vergeops/k8s-rvstore-api-gateway:1.0
+        imagePullPolicy: IfNotPresent
         ports:
         - name: gw-port
           containerPort: 9000
