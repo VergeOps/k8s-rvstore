@@ -1,3 +1,16 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: local
+provisioner: local
+parameters:
+  type: gp2
+reclaimPolicy: Retain
+allowVolumeExpansion: true
+mountOptions:
+  - debug
+volumeBindingMode: Immediate
+---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -9,7 +22,7 @@ spec:
   accessModes:
   - ReadWriteOnce
   persistentVolumeReclaimPolicy: Delete
-  storageClassName: manual
+  storageClassName: local
   local:
     path: /rvstore/data
   nodeAffinity:
@@ -26,7 +39,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: mongo-pvc
 spec:
-  storageClassName: manual
+  storageClassName: local
   accessModes:
     - ReadWriteOnce
   resources:
