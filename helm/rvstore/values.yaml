@@ -8,7 +8,7 @@ namespace: rvstore
 mongo:
   serviceName: rvstore-orders-mongodb
   label: rvstore-mongo
-  image: mongo:4.2.5
+  image: public.ecr.aws/e7e6w2e3/rvstore-mongo
   replicas: 1
   username: mongoadmin
   password: secret
@@ -25,7 +25,7 @@ services:
     nodePort: 30080
     replicas: 1
     type: NodePort
-    image: vergeops/k8s-rvstore-ui:1.0
+    image: public.ecr.aws/e7e6w2e3/rvstore-ui
     resources:
       requests: 100m
       limits: 200m
@@ -35,7 +35,7 @@ services:
     label: rvstore-product-api
     port: 9001
     replicas: 1
-    image: vergeops/k8s-rvstore-product-api:1.0
+    image: public.ecr.aws/e7e6w2e3/rvstore-product-api
     resources:
       requests: 100m
       limits: 500m
@@ -45,7 +45,7 @@ services:
     label: rvstore-auth-api
     port: 9003
     replicas: 1
-    image: vergeops/k8s-rvstore-auth-api:1.0
+    image: public.ecr.aws/e7e6w2e3/rvstore-auth-api
     resources:
       requests: 100m
       limits: 500m
@@ -55,7 +55,7 @@ services:
     label: rvstore-order-api
     port: 9002
     replicas: 1
-    image: vergeops/k8s-rvstore-order-api:1.0
+    image: public.ecr.aws/e7e6w2e3/rvstore-order-api
     resources:
       requests: 100m
       limits: 500m
@@ -67,14 +67,14 @@ services:
     nodePort: 30090
     replicas: 1
     type: NodePort
-    image: vergeops/k8s-rvstore-api-gateway:1.0
+    image: public.ecr.aws/e7e6w2e3/rvstore-gateway-service
     resources:
       requests: 300m
       limits: 300m
   orderSimulator:
     name: order-simulator-deployment
     replicas: 1
-    image: vergeops/k8s-rvstore-order-simulator:1.0
+    image: public.ecr.aws/e7e6w2e3/rvstore-order-simulator
     resources:
       requests: 50m
       limits: 100m

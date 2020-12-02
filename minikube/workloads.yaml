@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: ui
-        image: vergeops/k8s-rvstore-ui:1.0
+        image: public.ecr.aws/e7e6w2e3/rvstore-ui
         ports:
         - name: ui-port
           containerPort: 80
@@ -56,7 +56,7 @@ spec:
           name: products-config   
       containers:
       - name: rvstore-product-api
-        image: vergeops/k8s-rvstore-product-api:1.0
+        image: public.ecr.aws/e7e6w2e3/rvstore-product-api
         imagePullPolicy: IfNotPresent
         ports:
         - name: product-port
@@ -101,7 +101,7 @@ spec:
     spec:
       containers:
       - name: rvstore-auth-api
-        image: vergeops/k8s-rvstore-auth-api:1.0
+        image: public.ecr.aws/e7e6w2e3/rvstore-auth-api
         imagePullPolicy: IfNotPresent
         ports:
         - name: auth-port
@@ -140,7 +140,7 @@ spec:
     spec:
       containers:
       - name: rvstore-order-api
-        image: vergeops/k8s-rvstore-order-api:1.0
+        image: public.ecr.aws/e7e6w2e3/rvstore-order-api
         imagePullPolicy: IfNotPresent
         envFrom:
         - configMapRef:
@@ -183,7 +183,7 @@ spec:
     spec:
       containers:
       - name: rvstore-order-simulator
-        image: vergeops/k8s-rvstore-order-simulator:1.0
+        image: public.ecr.aws/e7e6w2e3/rvstore-order-simulator
         imagePullPolicy: IfNotPresent
         envFrom:
         - configMapRef:
@@ -206,7 +206,7 @@ spec:
     spec:
       containers:
       - name: rvstore-api-gateway
-        image: vergeops/k8s-rvstore-api-gateway:1.0
+        image: public.ecr.aws/e7e6w2e3/rvstore-gateway-service
         imagePullPolicy: IfNotPresent
         ports:
         - name: gw-port

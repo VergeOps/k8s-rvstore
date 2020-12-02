@@ -1,17 +1,17 @@
 cd ../Microservices/auth-api
-docker build -t vergeops/k8s-rvstore-auth-api:1.0 .
+docker build -t public.ecr.aws/e7e6w2e3/rvstore-auth-api .
 
 cd ../gateway-service
-docker build -t vergeops/k8s-rvstore-api-gateway:1.0 .
+docker build -t public.ecr.aws/e7e6w2e3/rvstore-gateway-service .
 
 cd ../order-api
-docker build -t vergeops/k8s-rvstore-order-api:1.0 .
+docker build -t public.ecr.aws/e7e6w2e3/rvstore-order-api .
 
 cd ../order-simulator
-docker build -t vergeops/k8s-rvstore-order-simulator:1.0 .
+docker build -t public.ecr.aws/e7e6w2e3/rvstore-order-simulator .
 
 cd ../product-api
-docker build -t vergeops/k8s-rvstore-product-api:1.0 .
+docker build -t public.ecr.aws/e7e6w2e3/rvstore-product-api .
 
 cd ../ui
-docker build -t vergeops/k8s-rvstore-ui:1.0 .
+docker build -t public.ecr.aws/e7e6w2e3/rvstore-ui .
