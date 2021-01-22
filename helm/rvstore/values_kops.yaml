@@ -1,26 +1,26 @@
 # Spring properties
-springProfile: kops
+springProfile: compose
 
 # Service properties
 services:
   ui:
-    replicas: 3
+    replicas: 1
     type: LoadBalancer
     resources:
       requests: 500m
       limits: 500m
   productApi:
-    replicas: 3
+    replicas: 1
     resources:
       requests: 500m
       limits: 500m
   orderApi:
-    replicas: 3
+    replicas: 1
     resources:
       requests: 500m
       limits: 500m
   gateway:
-    replicas: 3
+    replicas: 1
     type: LoadBalancer
     resources:
       requests: 500m

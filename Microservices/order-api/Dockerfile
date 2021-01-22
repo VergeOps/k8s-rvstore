@@ -1,6 +1,4 @@
 FROM alpine:latest
-MAINTAINER Tim Solley
-USER root
 
 RUN apk update
 RUN apk fetch openjdk8

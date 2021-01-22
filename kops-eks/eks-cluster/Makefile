@@ -8,6 +8,12 @@ deploy-cluster-autoscaler:
 	kubectl apply -f cluster-autoscaler-autodiscover.yaml
 	kubectl -n kube-system annotate deployment.apps/cluster-autoscaler cluster-autoscaler.kubernetes.io/safe-to-evict="false"
 
+deploy-metrics-server:
+	kubectl apply -f metrics-server.yaml
+
+deploy-load-tester:
+	kubectl apply -f loadtester.yaml
+
 deploy-cloudwatch-logs:
 	kubectl apply -f cloudwatch-insights.yaml
 	eksctl utils update-cluster-logging --enable-types all --profile vergeops --region us-west-2 --cluster rvstore --approve

@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: orderloadtester
+  namespace: rvstore
+spec:
+  containers:
+  - name: loader
+    image: bunchjesse/loadtest
+    env:
+        - name: NUM_USERS
+          value: "50"
+        - name: URL
+          value: http://rvstore-order-api:9002/orders
+        - name: DURATION
+          value: "20000"
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: productloadtester
+  namespace: rvstore
+spec:
+  containers:
+  - name: loader
+    image: bunchjesse/loadtest
+    env:
+        - name: NUM_USERS
+          value: "50"
+        - name: URL
+          value: http://rvstore-product-api:9001/products
+        - name: DURATION
+          value: "20000"

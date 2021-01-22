@@ -16,7 +16,7 @@ mongo:
 
 # Service properties
 services:
-  targetCPUPercentage: 50
+  targetCPUPercentage: 10
   ui:
     name: ui-deployment
     serviceName: rvstore-ui
