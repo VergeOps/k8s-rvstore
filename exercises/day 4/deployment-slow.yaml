@@ -22,4 +22,4 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: vergeops/versioned-nginx:2.0
+        image: vergeops/versioned-nginx:1.0

@@ -9,7 +9,24 @@ spec:
     image: bunchjesse/loadtest
     env:
         - name: NUM_USERS
-          value: "50"
+          value: "100"
+        - name: URL
+          value: http://nginx-service:80
+        - name: DURATION
+          value: "20000"
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: loadtester2
+  namespace: advk8s
+spec:
+  containers:
+  - name: loader
+    image: bunchjesse/loadtest
+    env:
+        - name: NUM_USERS
+          value: "100"
         - name: URL
           value: http://nginx-service:80
         - name: DURATION
