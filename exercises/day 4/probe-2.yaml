@@ -2,8 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: probe-deployment
-  labels:
-    app: nginx
 spec:
   replicas: 10
   selector:
