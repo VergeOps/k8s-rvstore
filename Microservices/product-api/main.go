@@ -84,6 +84,15 @@ func enableCors(w *http.ResponseWriter) {
 }
 
 func readProductsFile() {
+	environment := os.Getenv("ENVIRONMENT")
+	if environment == "containerized" {
+		readProductsFileFromContainer()
+	} else {
+		readProductsFileFromConfigMap()
+	}
+}
+
+func readProductsFileFromConfigMap() {
 	location := os.Getenv("PRODUCT_FILE_LOCATION")
 	fmt.Println("Reading file from: " + location + "/products.json")
 	data, err := ioutil.ReadFile(location + "/products.json")
@@ -91,6 +100,25 @@ func readProductsFile() {
 		fmt.Println("File reading error", err)
 		fmt.Println("Did you correctly provide the products.json file in a ConfigMap? Try getting into the pod and looking around the file system for this file.")
 		fmt.Println("kubectl exec -it <pod name> -- bash")
+		return
+	}
+	fmt.Println("Contents of file:", string(data))
+
+	products = make([]Product, 0)
+	err = json.Unmarshal([]byte(data), &products)
+	if err != nil {
+		fmt.Println("Error marshalling products", err)
+		return
+	}
+
+
+}
+
+func readProductsFileFromContainer() {
+	fmt.Println("Reading file from: container file system")
+	data, err := ioutil.ReadFile("/data/products/container/products.json")
+	if err != nil {
+		fmt.Println("File reading error", err)
 		return
 	}
 	fmt.Println("Contents of file:", string(data))
