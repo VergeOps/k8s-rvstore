@@ -17,6 +17,7 @@ type AccessToken struct {
 func main() {
 
 	http.HandleFunc("/auth/login", handler)
+	http.HandleFunc("/health", healthHandler)
 
 	http.ListenAndServe(":9003", nil)
 }
@@ -31,6 +32,14 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		//nothing
 	}
 	fmt.Fprintf(w, string(response))
+}
+
+// "healthHandler" is our health handler function. It has to follow the function signature of a ResponseWriter and Request type
+// as the arguments.
+func healthHandler(w http.ResponseWriter, r *http.Request) {
+	enableCors(&w)
+	
+	fmt.Fprintf(w, "UP AND RUNNING")
 }
 
 func enableCors(w *http.ResponseWriter) {

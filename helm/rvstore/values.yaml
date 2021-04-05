@@ -8,7 +8,7 @@ namespace: rvstore
 mongo:
   serviceName: rvstore-orders-mongodb
   label: rvstore-mongo
-  image: public.ecr.aws/e7e6w2e3/rvstore-mongo
+  image: public.ecr.aws/vergeops/rvstore-mongo
   replicas: 1
   username: mongoadmin
   password: secret
@@ -25,7 +25,7 @@ services:
     nodePort: 30080
     replicas: 1
     type: NodePort
-    image: public.ecr.aws/e7e6w2e3/rvstore-ui
+    image: public.ecr.aws/vergeops/rvstore-ui
     resources:
       requests: 100m
       limits: 200m
@@ -35,7 +35,7 @@ services:
     label: rvstore-product-api
     port: 9001
     replicas: 1
-    image: public.ecr.aws/e7e6w2e3/rvstore-product-api
+    image: public.ecr.aws/vergeops/rvstore-product-api
     resources:
       requests: 100m
       limits: 500m
@@ -45,7 +45,7 @@ services:
     label: rvstore-auth-api
     port: 9003
     replicas: 1
-    image: public.ecr.aws/e7e6w2e3/rvstore-auth-api
+    image: public.ecr.aws/vergeops/rvstore-auth-api
     resources:
       requests: 100m
       limits: 500m
@@ -55,7 +55,7 @@ services:
     label: rvstore-order-api
     port: 9002
     replicas: 1
-    image: public.ecr.aws/e7e6w2e3/rvstore-order-api
+    image: public.ecr.aws/vergeops/rvstore-order-api
     resources:
       requests: 100m
       limits: 500m
@@ -67,17 +67,23 @@ services:
     nodePort: 30090
     replicas: 1
     type: NodePort
-    image: public.ecr.aws/e7e6w2e3/rvstore-gateway-service
+    image: public.ecr.aws/vergeops/rvstore-gateway-service
     resources:
       requests: 300m
       limits: 300m
   orderSimulator:
     name: order-simulator-deployment
+    image: public.ecr.aws/vergeops/rvstore-order-simulator
+  productSync:
+    name: rvstore-product-sync
+    image: public.ecr.aws/vergeops/rvstore-product-sync
+  elasticsearch:
+    name: elasticsearch
+    serviceName: elasticsearch
+    label: elasticsearch
+    port: 9200
     replicas: 1
-    image: public.ecr.aws/e7e6w2e3/rvstore-order-simulator
-    resources:
-      requests: 50m
-      limits: 100m
+    image: elasticsearch:7.12.0
     
   ingress:
     name: rvstore-gateway-ingress

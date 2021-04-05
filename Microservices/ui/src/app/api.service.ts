@@ -6,6 +6,8 @@ import { Order } from './order';
 import { environment } from '../environments/environment';
 import { Jwt } from './jwt';
 import { HttpHeaders } from '@angular/common/http';
+import { SearchResult } from './searchresult';
+import { SearchQuery } from './searchquery';
 
 @Injectable()
 export class ApiService {
@@ -13,17 +15,14 @@ export class ApiService {
   
   constructor(private http: HttpClient) { 
     if(window.location.hostname == 'localhost') {
-      this.endpoint = "http://localhost:9000/";
-    } else if (window.location.hostname == '192.168.99.100') {
-      this.endpoint = "http://192.168.99.100:30090/";
-    } 
-
+      this.endpoint = "http://localhost:30090";
+    }
   }
 
   //endpoint = environment.apiEndpoint;
 
   getProducts(): Observable<Product> {
-    return this.http.get<Product>(this.endpoint + "/products/");
+    return this.http.get<Product>(this.endpoint + "/products");
   }
 
   getOrders(): Observable<Order> {
@@ -32,6 +31,17 @@ export class ApiService {
 
   login(): Observable<Jwt> {
     return this.http.get<Jwt>(this.endpoint + "/auth/login");
+  }
+
+  searchProducts(query: SearchQuery): Observable<SearchResult> {
+    return this.http.post<SearchResult>(this.endpoint + "/products/_search", {
+      "query": {
+        "multi_match" : {
+          "query":    query, 
+          "fields": [ "*" ] 
+        }
+      }
+    });
   }
 
   accessSecure(token: string): Observable<string> {

@@ -13,6 +13,8 @@ import { Jwt } from './jwt';
 })
 export class AppComponent implements OnInit {
   public products;
+  public searchTerm;
+  public searchedProducts: Product[] = [];
   public orders;
   timeLeft: number;
   interval: number = 60;
@@ -32,6 +34,20 @@ export class AppComponent implements OnInit {
     });
 
     this.getProducts();
+  }
+
+  searchProducts() {
+    console.log("Search results:");
+    this.searchedProducts = [];
+    this.apiService.searchProducts(this.searchTerm).subscribe(
+      results => {
+        console.log(results);
+        results.hits.hits.forEach(product => {
+          this.searchedProducts.push(product._source);
+          //console.log(product._source);
+        });
+      }
+    );
   }
 
   getProducts() {
@@ -75,12 +91,14 @@ export class AppComponent implements OnInit {
     this.apiService.endpoint = this.backendUrl;
     this.message = `Making calls to:<br/>
       Product API <span class=\"badge badge-pill badge-primary\">${this.apiService.endpoint}products</span><br/>
+      Product Search API <span class=\"badge badge-pill badge-primary\">${this.apiService.endpoint}products/_search</span><br/>
       Auth API <span class=\"badge badge-pill badge-primary\">${this.apiService.endpoint}auth</span><br/>
       Order API <span class=\"badge badge-pill badge-primary\">${this.apiService.endpoint}orders</span>
       `;
     
     this.getProducts();
     this.getOrders();
+    this.searchProducts();
   }
 
   updateInterval(interval) {

@@ -9,7 +9,7 @@ zuul:
     include-debug-header: true
   routes:
     products:
-      path: /products/**
+      path: /products
       sensitiveHeaders: Cookie,Set-Cookie
       url: http://localhost:9001/products
     orders:
@@ -20,3 +20,7 @@ zuul:
       path: /auth/**
       sensitiveHeaders: Cookie,Set-Cookie
       url: http://localhost:9003/auth
+    search:
+      path: /products/_search
+      sensitiveHeaders: Cookie,Set-Cookie
+      url: http://localhost:9200

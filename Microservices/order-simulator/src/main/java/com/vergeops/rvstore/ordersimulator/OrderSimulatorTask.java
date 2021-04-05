@@ -49,6 +49,19 @@ public class OrderSimulatorTask {
 		order.setTotal(order.getSubTotal() + order.getTax());
 				
 		submitOrder(order);
+
+		quitIfJob();
+	}
+
+	private void quitIfJob() {
+		String isJob = System.getenv("JOB");
+		System.out.println("JOB: " + isJob);
+		if(isJob.equals("true")) {
+			System.out.println("JOB is set to true. Exiting.");
+			System.exit(0);
+		} else {
+			System.out.println("JOB is set to false. Continuing.");
+		}
 	}
 
 	@PostConstruct

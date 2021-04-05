@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: ui-deployment
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: ui
@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: ui
-        image: public.ecr.aws/e7e6w2e3/rvstore-ui
+        image: public.ecr.aws/vergeops/rvstore-ui
         ports:
         - name: ui-port
           containerPort: 80
@@ -41,7 +41,7 @@ kind: Deployment
 metadata:
   name: product-api-deployment
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: product-api
@@ -56,7 +56,7 @@ spec:
           name: products-config   
       containers:
       - name: rvstore-product-api
-        image: public.ecr.aws/e7e6w2e3/rvstore-product-api
+        image: public.ecr.aws/vergeops/rvstore-product-api
         imagePullPolicy: IfNotPresent
         ports:
         - name: product-port
@@ -69,18 +69,18 @@ spec:
           value: /data/products
         livenessProbe:
           httpGet:
-            path: /products/
+            path: /health
             port: product-port
         readinessProbe:
           httpGet:
-            path: /products/
+            path: /health
             port: product-port
           periodSeconds: 10
           successThreshold: 2
           failureThreshold: 1
         startupProbe:
           httpGet:
-            path: /products/
+            path: /health
             port: product-port
           periodSeconds: 10
           failureThreshold: 5
@@ -90,7 +90,7 @@ kind: Deployment
 metadata:
   name: auth-api-deployment
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: auth-api
@@ -101,25 +101,25 @@ spec:
     spec:
       containers:
       - name: rvstore-auth-api
-        image: public.ecr.aws/e7e6w2e3/rvstore-auth-api
+        image: public.ecr.aws/vergeops/rvstore-auth-api
         imagePullPolicy: IfNotPresent
         ports:
         - name: auth-port
           containerPort: 9003
         livenessProbe:
           httpGet:
-            path: /auth/login
+            path: /health
             port: auth-port
         readinessProbe:
           httpGet:
-            path: /auth/login
+            path: /health
             port: auth-port
           periodSeconds: 10
           successThreshold: 2
           failureThreshold: 1
         startupProbe:
           httpGet:
-            path: /auth/login
+            path: /health
             port: auth-port
           periodSeconds: 10
           failureThreshold: 5
@@ -129,7 +129,7 @@ kind: Deployment
 metadata:
   name: order-api-deployment
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: order-api
@@ -140,7 +140,7 @@ spec:
     spec:
       containers:
       - name: rvstore-order-api
-        image: public.ecr.aws/e7e6w2e3/rvstore-order-api
+        image: public.ecr.aws/vergeops/rvstore-order-api
         imagePullPolicy: IfNotPresent
         envFrom:
         - configMapRef:
@@ -165,37 +165,13 @@ spec:
             port: order-port
           periodSeconds: 10
           failureThreshold: 5
-
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: order-simulator-deployment
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: order-simulator
-  template:
-    metadata:
-      labels:
-        app: order-simulator
-    spec:
-      containers:
-      - name: rvstore-order-simulator
-        image: public.ecr.aws/e7e6w2e3/rvstore-order-simulator
-        imagePullPolicy: IfNotPresent
-        envFrom:
-        - configMapRef:
-            name: workload-config
-
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: api-gateway-deployment
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: api-gateway
@@ -206,7 +182,7 @@ spec:
     spec:
       containers:
       - name: rvstore-api-gateway
-        image: public.ecr.aws/e7e6w2e3/rvstore-gateway-service
+        image: public.ecr.aws/vergeops/rvstore-gateway-service
         imagePullPolicy: IfNotPresent
         ports:
         - name: gw-port

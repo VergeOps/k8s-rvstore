@@ -52,5 +52,12 @@ public class OrderController {
 		return order;
 	}
 
+	@RequestMapping(path = "/health", method = RequestMethod.GET)
+	public String healthCheck(HttpServletResponse response) {
+		System.out.println("In health check");
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		return "UP AND RUNNING";
+	}
+
 
 }

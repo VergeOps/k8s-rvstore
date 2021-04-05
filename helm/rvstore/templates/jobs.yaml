@@ -1,0 +1,42 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ .Values.services.orderSimulator.name }}
+  namespace: {{ .Values.namespace }}
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: rvstore-order-simulator
+            image: {{ .Values.services.orderSimulator.image }}
+            imagePullPolicy: IfNotPresent
+            envFrom:
+            - configMapRef:
+                name: {{ .Release.Name }}-workload-config
+            env:
+            - name: JOB
+              value: "true"
+          restartPolicy: OnFailure
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ .Values.services.productSync.name }}
+  namespace: {{ .Values.namespace }}
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: rvstore-product-sync
+            image: {{ .Values.services.productSync.image }}
+            imagePullPolicy: IfNotPresent
+            env:
+            - name: JOB
+              value: "true"
+          restartPolicy: OnFailure

@@ -1,0 +1,40 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: order-simulator
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: rvstore-order-simulator
+            image: public.ecr.aws/vergeops/rvstore-order-simulator
+            imagePullPolicy: IfNotPresent
+            envFrom:
+            - configMapRef:
+                name: workload-config
+            env:
+            - name: JOB
+              value: "true"
+          restartPolicy: OnFailure
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: product-sync
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: rvstore-product-sync
+            image: public.ecr.aws/vergeops/rvstore-product-sync
+            imagePullPolicy: IfNotPresent
+            env:
+            - name: JOB
+              value: "true"
+          restartPolicy: OnFailure

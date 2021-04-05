@@ -184,32 +184,3 @@ spec:
             cpu: {{ .Values.services.orderApi.resources.limits }}
           requests:
             cpu: {{ .Values.services.orderApi.resources.requests }}
-
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: {{ .Values.services.orderSimulator.name }}
-  namespace: {{ .Values.namespace }}
-spec:
-  replicas: {{ .Values.services.orderSimulator.replicas }}
-  selector:
-    matchLabels:
-      app: order-simulator
-  template:
-    metadata:
-      labels:
-        app: order-simulator
-    spec:
-      containers:
-      - name: rvstore-order-simulator
-        image: {{ .Values.services.orderSimulator.image }}
-        imagePullPolicy: IfNotPresent
-        envFrom:
-        - configMapRef:
-            name: {{ .Release.Name }}-workload-config
-        resources:
-          limits:
-            cpu: {{ .Values.services.orderSimulator.resources.limits }}
-          requests:
-            cpu: {{ .Values.services.orderSimulator.resources.requests }}

@@ -12,6 +12,10 @@ spec:
   rules:
   - http:
       paths:
+      - path: /products/_search
+        backend:
+          serviceName: {{ .Values.services.elasticsearch.serviceName }}
+          servicePort: {{ .Values.services.elasticsearch.port }}
       - path: /products
         backend:
           serviceName: {{ .Values.services.productApi.serviceName }}

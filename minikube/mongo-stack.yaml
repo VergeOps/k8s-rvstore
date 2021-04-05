@@ -1,9 +1,10 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
-  name: order-mongodb-deployment
+  name: orders-mongodb
 spec:
   replicas: 1
+  serviceName: orders-mongodb
   selector:
     matchLabels:
       app: order-mongodb
@@ -14,7 +15,7 @@ spec:
     spec:
       containers:
       - name: rvstore-orders-mongodb
-        image: public.ecr.aws/e7e6w2e3/rvstore-mongo
+        image: public.ecr.aws/vergeops/rvstore-mongo
         imagePullPolicy: IfNotPresent
         envFrom:
         - secretRef:

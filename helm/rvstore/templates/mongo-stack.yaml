@@ -1,10 +1,11 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: {{ .Release.Name }}-order-mongodb-deployment
   namespace: {{ .Values.namespace }}
 spec:
   replicas: {{ .Values.mongo.replicas }}
+  serviceName: orders-mongodb
   selector:
     matchLabels:
       app: {{ .Values.mongo.label }}

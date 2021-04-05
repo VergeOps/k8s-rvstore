@@ -18,6 +18,8 @@
         <li>An authentication API service: Send back an OAuth token (a JSON Web Token, or JWT)</li>
         <li>An order API service: Receives orders and sends back a list of orders</li>
         <li>An order simulator: Runs as a background service and submits orders periodically</li>
+        <li>An Elasticsearch database: Stores products in a searchable form that enables search</li>
+        <li>A product sync service: Reads products from the product API service and pushes them to Elasticsearch</li>
         <li>A gateway service: Acts as a central entrypoint to the API, and routes requests to the auth, product, and
           order services based on the HTTP path</li>
         <li>A MongoDB database to store orders</li>
@@ -46,7 +48,7 @@
           product API.</li>
       </ol>
       <h4>Architecture Diagram</h4>
-      <img src="/assets/diagram.png" width="100%" />
+      <img src="/assets/diagram.png" width="1005px" />
     </div>
   </div>
 
@@ -60,7 +62,11 @@
         Backend host name: <input name="backendUrl" type="text" size="100" [(ngModel)]="backendUrl"> <button
           type="submit" class="btn btn-primary" (click)="updateBackend()">Update</button>
       </form>
-      <div [innerHTML]="message"></div>
+      <div>Making calls to:</div>
+      <div>Product API <span class="badge badge-pill badge-primary">{{apiService.endpoint}}/products</span></div>
+      <div>Product Search API <span class="badge badge-pill badge-primary">{{apiService.endpoint}}/products/_search</span></div>
+      <div>Auth API <span class="badge badge-pill badge-primary">{{apiService.endpoint}}/auth</span></div>
+      <div>Order API <span class="badge badge-pill badge-primary">{{apiService.endpoint}}/orders</span></div>
     </div>
   </div>
 
@@ -107,7 +113,33 @@
   </div>
 
   <div class="card" style="margin-top: 2em;">
-    <h5 class="card-header">Step 4: Test order service</h5>
+    <h5 class="card-header">Step 4: Test product search service</h5>
+    <div class="card-body">
+      <div class="row">
+        <form>
+          Search term: <input name="searchTerm" type="text" size="100" [(ngModel)]="searchTerm"> <button
+            type="submit" class="btn btn-primary" (click)="searchProducts()">Search</button>
+        </form>
+      </div>
+      <div class="row">
+        <div *ngFor="let product of searchedProducts">
+          <div class="col-sm-2">
+            <div class="card" style="width: 18rem;">
+              <img class="card-img-top" src="{{product.image}}" alt="Card image cap">
+              <div class="card-body">
+                <h5 class="card-title">{{product.name}}</h5>
+                <p class="card-text">{{product.description}}</p>
+                <h4>{{product.price | currency}}</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top: 2em;">
+    <h5 class="card-header">Step 5: Test order service</h5>
     <div class="card-body">
       <p><a href="#" (click)="updateInterval(10)">10</a> | <a href="#" (click)="updateInterval(30)">30</a> | <a href="#"
           (click)="updateInterval(60)">60</a> | <a href="#" (click)="updateInterval(120)">120</a> seconds <i

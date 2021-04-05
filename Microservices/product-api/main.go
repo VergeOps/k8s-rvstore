@@ -26,6 +26,10 @@ type RVClaims struct {
 	jwt.StandardClaims
 }
 
+type Search struct {
+    Term string `json:"term"`
+}
+
 var products []Product
 
 func main() {
@@ -34,6 +38,8 @@ func main() {
 	http.HandleFunc("/products", handler)
 	http.HandleFunc("/products/", handler)
 	http.HandleFunc("/products/secure", secureHandler)
+
+	http.HandleFunc("/health", healthHandler)
 
 	http.ListenAndServe(":9001", nil)
 	fmt.Println("The product API server is listening on port 9001")
@@ -57,6 +63,14 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	} else {
 		fmt.Fprintf(w, string(response))
 	}
+}
+
+// "healthHandler" is our health handler function. It has to follow the function signature of a ResponseWriter and Request type
+// as the arguments.
+func healthHandler(w http.ResponseWriter, r *http.Request) {
+	enableCors(&w)
+	
+	fmt.Fprintf(w, "UP AND RUNNING")
 }
 
 func secureHandler(w http.ResponseWriter, r *http.Request) {

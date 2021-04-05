@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   ui:
-    build: Microservices/ui
+    image: public.ecr.aws/vergeops/rvstore-ui
     restart: always
     ports:
      - "80:80"
@@ -43,3 +43,12 @@ services:
     build: Microservices/order-simulator
     environment:
      - SPRING_PROFILES_ACTIVE=compose
+  rvstore-product-sync:
+    image: public.ecr.aws/vergeops/rvstore-product-sync
+  elasticsearch:
+    image: elasticsearch:7.12.0
+    ports:
+      - "9200:9200"
+    environment:
+     - discovery.type=single-node
+     - ES_JAVA_OPTS=-Xms256m -Xmx256m

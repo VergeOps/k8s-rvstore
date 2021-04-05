@@ -1,11 +1,13 @@
-FROM golang
+FROM golang as builder
 
 WORKDIR /go/src/auth-api
 COPY ./main.go .
 
-RUN ls -la
-
 RUN go get -d -v ./...
 RUN go install -v ./...
+RUN ls
 
-CMD ["auth-api"]
+FROM ubuntu as final
+COPY --from=builder /go/bin/auth-api /
+
+ENTRYPOINT ["/auth-api"]
