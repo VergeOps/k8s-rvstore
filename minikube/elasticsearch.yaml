@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: elasticsearch
-        image: elasticsearch:7.12.0
+        image: public.ecr.aws/vergeops/rvstore-elasticsearch:latest
         env:
         - name: discovery.type
           value: single-node
