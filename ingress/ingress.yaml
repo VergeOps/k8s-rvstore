@@ -11,6 +11,10 @@ spec:
   rules:
   - http:
       paths:
+      - path: /products/_search
+        backend:
+          serviceName: elasticsearch
+          servicePort: 9200
       - path: /products
         backend:
           serviceName: rvstore-product-api

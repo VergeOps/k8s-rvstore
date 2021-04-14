@@ -5,7 +5,7 @@ zuul:
       sensitiveHeaders: Cookie,Set-Cookie
       url: http://elasticsearch:9200
     products:
-      path: /products
+      path: /products/**
       sensitiveHeaders: Cookie,Set-Cookie
       url: http://rvstore-product-api:9001/products
     orders:

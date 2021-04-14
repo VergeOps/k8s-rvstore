@@ -1,7 +1,11 @@
 zuul:
   routes:
+    search:
+      path: /products/_search
+      sensitiveHeaders: Cookie,Set-Cookie
+      url: http://elasticsearch:9200
     products:
-      path: /products
+      path: /products/**
       sensitiveHeaders: Cookie,Set-Cookie
       url: http://rvstore-product-api:9001/products
     orders:
@@ -12,7 +16,4 @@ zuul:
       path: /auth/**
       sensitiveHeaders: Cookie,Set-Cookie
       url: http://rvstore-auth-api:9003/auth
-    search:
-      path: /products/_search
-      sensitiveHeaders: Cookie,Set-Cookie
-      url: http://elasticsearch:9200
+    
