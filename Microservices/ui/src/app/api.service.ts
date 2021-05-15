@@ -8,6 +8,8 @@ import { Jwt } from './jwt';
 import { HttpHeaders } from '@angular/common/http';
 import { SearchResult } from './searchresult';
 import { SearchQuery } from './searchquery';
+import { ProductResponse } from './product-response';
+import { OrderResponse } from './order-response';
 
 @Injectable()
 export class ApiService {
@@ -21,12 +23,12 @@ export class ApiService {
 
   //endpoint = environment.apiEndpoint;
 
-  getProducts(): Observable<Product> {
-    return this.http.get<Product>(this.endpoint + "/products");
+  getProducts(): Observable<ProductResponse> {
+    return this.http.get<ProductResponse>(this.endpoint + "/products");
   }
 
-  getOrders(): Observable<Order> {
-    return this.http.get<Order>(this.endpoint + "/orders/");
+  getOrders(): Observable<OrderResponse> {
+    return this.http.get<OrderResponse>(this.endpoint + "/orders");
   }
 
   login(): Observable<Jwt> {

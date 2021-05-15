@@ -14,7 +14,8 @@ def sync_products(sc):
         products = r.json()
         print(products)
 
-        for product in products:
+        for product in products['products']:
+            print("Posting " + product['name'] + " to Elasticsearch...")
             requests.put('http://elasticsearch:9200/products/_doc/' + product['id'], json=product)
             print("Posted " + product['name'] + " to Elasticsearch")
     except Exception as err:

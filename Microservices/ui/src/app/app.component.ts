@@ -5,6 +5,7 @@ import { Product } from './product';
 import { Observable } from 'rxjs';
 import { interval } from 'rxjs';
 import { Jwt } from './jwt';
+import { Order } from './order';
 
 @Component({
   selector: 'app-root',
@@ -12,10 +13,10 @@ import { Jwt } from './jwt';
   styleUrls: ['./app.component.less']
 })
 export class AppComponent implements OnInit {
-  public products;
+  public products: Product[] = [];
   public searchTerm;
   public searchedProducts: Product[] = [];
-  public orders;
+  public orders: Order[] = [];
   timeLeft: number;
   interval: number = 60;
   public backendUrl = this.apiService.endpoint;
@@ -53,7 +54,7 @@ export class AppComponent implements OnInit {
   getProducts() {
     this.apiService.getProducts().subscribe(
       products => {
-        this.products = products;
+        this.products = products.products;
       }
     );
   }
@@ -73,7 +74,7 @@ export class AppComponent implements OnInit {
       },
       err => {
         console.log(err);
-        this.secureResponse = JSON.stringify(err);
+        this.secureResponse = "Not allowed! An invalid or missing JWT caused the service to reject the request";
       }
     );
   }
@@ -81,8 +82,8 @@ export class AppComponent implements OnInit {
   getOrders() {
     this.orders = [];
     this.apiService.getOrders().subscribe(
-      orders => {
-        this.orders = orders;
+      response => {
+        this.orders = response.orders;
       }
     );
   }

@@ -60,7 +60,7 @@ var ApiService = /** @class */ (function () {
         return this.http.get(this.endpoint + "/products");
     };
     ApiService.prototype.getOrders = function () {
-        return this.http.get(this.endpoint + "/orders/");
+        return this.http.get(this.endpoint + "/orders");
     };
     ApiService.prototype.login = function () {
         return this.http.get(this.endpoint + "/auth/login");
@@ -184,7 +184,9 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 var AppComponent = /** @class */ (function () {
     function AppComponent(apiService) {
         this.apiService = apiService;
+        this.products = [];
         this.searchedProducts = [];
+        this.orders = [];
         this.interval = 60;
         this.backendUrl = this.apiService.endpoint;
         this.jwt = new _jwt__WEBPACK_IMPORTED_MODULE_3__["Jwt"]();
@@ -214,7 +216,7 @@ var AppComponent = /** @class */ (function () {
     AppComponent.prototype.getProducts = function () {
         var _this = this;
         this.apiService.getProducts().subscribe(function (products) {
-            _this.products = products;
+            _this.products = products.products;
         });
     };
     AppComponent.prototype.login = function () {
@@ -229,14 +231,14 @@ var AppComponent = /** @class */ (function () {
             _this.secureResponse = JSON.stringify(response);
         }, function (err) {
             console.log(err);
-            _this.secureResponse = JSON.stringify(err);
+            _this.secureResponse = "Not allowed! An invalid or missing JWT caused the service to reject the request";
         });
     };
     AppComponent.prototype.getOrders = function () {
         var _this = this;
         this.orders = [];
-        this.apiService.getOrders().subscribe(function (orders) {
-            _this.orders = orders;
+        this.apiService.getOrders().subscribe(function (response) {
+            _this.orders = response.orders;
         });
     };
     AppComponent.prototype.updateBackend = function () {

@@ -2,6 +2,7 @@ FROM golang as builder
 
 WORKDIR /go/src/product-api
 COPY ./main.go .
+COPY ./go.mod .
 
 RUN go get -d -v ./...
 RUN go install -v ./...

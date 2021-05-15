@@ -10,6 +10,15 @@ import (
 	"github.com/dgrijalva/jwt-go"
 )
 
+type ProductResponse struct {
+	Products []Product `json:"products"`
+}
+
+type SecureContentResponse struct {
+	SecretInformation string `json:"secretInformation"`
+	Access string `json:"access"`
+}
+
 type Product struct {
 	ID          string  `json:"id"`
 	Name        string  `json:"name"`
@@ -30,7 +39,7 @@ type Search struct {
     Term string `json:"term"`
 }
 
-var products []Product
+var products ProductResponse
 
 func main() {
 	fmt.Println("Starting up")
@@ -58,7 +67,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("Unable to marshal products to send back")
 	}
 	fmt.Println("Received a request for product data")
-	if len(products) == 0 {
+	if len(products.Products) == 0 {
 		fmt.Fprintf(w, "There are no products in the service. Did you correctly provide the products.json file to the pod?")
 	} else {
 		fmt.Fprintf(w, string(response))
@@ -83,7 +92,15 @@ func secureHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(authorization)
 		result := VerifyJwt(authorization)
 		if result {
-			fmt.Fprintf(w, string("User is authorized to access this endpoint. Processing continues successfully."))
+			secureResponse := SecureContentResponse{ 
+				SecretInformation: "This is protected content from a JWT protected resource!",
+				Access: "Allowed",
+			}
+			response, err := json.Marshal(secureResponse)
+			if err != nil {
+				fmt.Println("Unable to marshal secure response")
+			}
+			fmt.Fprintf(w, string(response))
 		} else {
 			http.Error(w, "FORBIDDEN!", http.StatusForbidden)
 		}
@@ -118,14 +135,12 @@ func readProductsFileFromConfigMap() {
 	}
 	fmt.Println("Contents of file:", string(data))
 
-	products = make([]Product, 0)
+	//products = make(ProductResponse, 0)
 	err = json.Unmarshal([]byte(data), &products)
 	if err != nil {
 		fmt.Println("Error marshalling products", err)
 		return
 	}
-
-
 }
 
 func readProductsFileFromContainer() {
@@ -137,7 +152,7 @@ func readProductsFileFromContainer() {
 	}
 	fmt.Println("Contents of file:", string(data))
 
-	products = make([]Product, 0)
+	//products = make(ProductResponse, 0)
 	err = json.Unmarshal([]byte(data), &products)
 	if err != nil {
 		fmt.Println("Error marshalling products", err)
@@ -168,5 +183,4 @@ func VerifyJwt(tokenString string) bool {
 	}
 
 	return false
-
 }

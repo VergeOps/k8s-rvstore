@@ -18,7 +18,7 @@ spec:
             env:
             - name: JOB
               value: "true"
-          restartPolicy: OnFailure
+          restartPolicy: Never
 ---
 apiVersion: batch/v1beta1
 kind: CronJob
@@ -37,4 +37,4 @@ spec:
             env:
             - name: JOB
               value: "true"
-          restartPolicy: OnFailure
+          restartPolicy: Never

@@ -1,0 +1,144 @@
+{
+  "version": 2,
+  "extra_config": {
+    "github_com/devopsfaith/krakend-cors": {
+      "allow_origins": [
+        "*"
+      ],
+      "allow_headers": [
+        "*"
+      ],
+      "expose_headers": [
+        "Content-Length"
+      ],
+      "max_age": "12h",
+      "allow_methods": [
+        "GET",
+        "HEAD",
+        "POST"
+      ]
+    }
+  },
+  "timeout": "3000ms",
+  "cache_ttl": "300s",
+  "output_encoding": "json",
+  "name": "Gateway",
+  "port": 9000,
+  "endpoints": [
+    {
+      "endpoint": "/products",
+      "method": "GET",
+      "output_encoding": "json",
+      "extra_config": {},
+      "backend": [
+        {
+          "url_pattern": "/products",
+          "host": [
+              "http://rvstore-product-api:9001"
+          ],
+          "method": "GET"
+        }
+      ]
+    },
+    {
+      "endpoint": "/products/secure",
+      "method": "GET",
+      "headers_to_pass": ["Authorization"],
+      "output_encoding": "json",
+      "extra_config": {},
+      "backend": [
+        {
+          "url_pattern": "/products/secure",
+          "host": [
+              "http://rvstore-product-api:9001"
+          ],
+          "method": "GET"
+        }
+      ]
+    },
+    {
+      "endpoint": "/orders",
+      "method": "GET",
+      "output_encoding": "json",
+      "extra_config": {},
+      "backend": [
+        {
+          "url_pattern": "/orders",
+          "host": [
+              "http://rvstore-order-api:9002"
+          ],
+          "method": "GET"
+        }
+      ]
+    },
+    {
+      "endpoint": "/orders",
+      "method": "POST",
+      "output_encoding": "json",
+      "extra_config": {},
+      "backend": [
+        {
+          "url_pattern": "/orders/",
+          "host": [
+              "http://rvstore-order-api:9002"
+          ],
+          "method": "POST"
+        }
+      ]
+    },
+    {
+      "endpoint": "/auth/login",
+      "method": "GET",
+      "output_encoding": "json",
+      "extra_config": {},
+      "backend": [
+        {
+          "url_pattern": "/auth/login",
+          "host": [
+              "http://rvstore-auth-api:9003"
+          ],
+          "method": "GET"
+        }
+      ]
+    },
+    {
+      "endpoint": "/products/_search",
+      "method": "POST",
+      "output_encoding": "json",
+      "extra_config": {},
+      "backend": [
+        {
+          "url_pattern": "/products/_search",
+          "host": [
+              "http://elasticsearch:9200"
+          ],
+          "method": "GET"
+        }
+      ]
+    },
+    {
+      "endpoint": "/health",
+      "method": "GET",
+      "output_encoding": "json",
+      "extra_config": {
+        "github.com/devopsfaith/krakend/proxy": {
+          "static": {
+            "data": {
+              "status": "OK"
+            },
+            "strategy": "always"
+          }
+        }
+      },
+      "backend": [
+        {
+          "url_pattern": "/fake",
+          "encoding": "json",
+          "sd": "static",
+          "method": "GET",
+          "extra_config": {}
+        }
+      ]
+    }
+  ]
+}

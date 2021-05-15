@@ -18,3 +18,6 @@ stop-docker:
 	
 push-docker:
 	docker push public.ecr.aws/vergeops/rvstore-gateway-service
+
+build-krakend:
+	docker build -t public.ecr.aws/vergeops/rvstore-gateway-service -f Dockerfile_krakend .

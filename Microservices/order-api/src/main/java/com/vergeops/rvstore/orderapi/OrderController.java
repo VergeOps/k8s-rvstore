@@ -21,14 +21,15 @@ public class OrderController {
 	@Autowired
 	private OrderRepository repository;
 	
-	private List<Order> orders = new ArrayList<Order>();
-	
 	@RequestMapping(path = "", method = RequestMethod.GET)
-	public List<Order> getOrders(HttpServletResponse response) {
+	public OrderResponse getOrders(HttpServletResponse response) {
 		System.out.println("In getOrders");
 		response.setHeader("Access-Control-Allow-Origin", "*");
+		OrderResponse orderResponse = new OrderResponse();
+		List<Order> orders = repository.findAll();
+		orderResponse.setOrders(orders);
 		
-		return repository.findAll();
+		return orderResponse;
 	}
 
 	@RequestMapping(path = "/{id}", method = RequestMethod.GET)
