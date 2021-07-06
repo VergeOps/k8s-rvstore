@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ui-deployment
+  namespace: rvstore
 spec:
   replicas: 1
   selector:
@@ -41,6 +42,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: product-api-deployment
+  namespace: rvstore
 spec:
   replicas: 1
   selector:
@@ -90,6 +92,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: auth-api-deployment
+  namespace: rvstore
 spec:
   replicas: 1
   selector:
@@ -129,6 +132,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: order-api-deployment
+  namespace: rvstore
 spec:
   replicas: 1
   selector:
@@ -171,6 +175,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: api-gateway-deployment
+  namespace: rvstore
 spec:
   replicas: 1
   selector:

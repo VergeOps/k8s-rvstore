@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: orders-mongodb
+  namespace: rvstore
 spec:
   replicas: 1
   serviceName: orders-mongodb
@@ -36,6 +37,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: rvstore-orders-mongodb
+  namespace: rvstore
 spec:
   type: ClusterIP
   selector:

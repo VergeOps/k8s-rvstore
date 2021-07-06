@@ -1,4 +1,4 @@
-apiVersion: batch/v1beta1
+apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: {{ .Values.services.orderSimulator.name }}
@@ -21,7 +21,7 @@ spec:
               value: "true"
           restartPolicy: OnFailure
 ---
-apiVersion: batch/v1beta1
+apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: {{ .Values.services.productSync.name }}

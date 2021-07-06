@@ -2,6 +2,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: rvstore-ui
+  namespace: rvstore
 spec:
   type: NodePort
   selector:
@@ -15,6 +16,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: rvstore-product-api
+  namespace: rvstore
 spec:
   type: ClusterIP
   selector:
@@ -27,6 +29,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: rvstore-auth-api
+  namespace: rvstore
 spec:
   type: ClusterIP
   selector:
@@ -39,6 +42,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: rvstore-order-api
+  namespace: rvstore
 spec:
   type: ClusterIP
   selector:
@@ -52,6 +56,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: rvstore-api-gateway
+  namespace: rvstore
 spec:
   type: NodePort
   selector:

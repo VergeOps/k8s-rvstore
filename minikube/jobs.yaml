@@ -1,12 +1,16 @@
-apiVersion: batch/v1beta1
+apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: order-simulator
+  namespace: rvstore
 spec:
   schedule: "*/1 * * * *"
   jobTemplate:
     spec:
       template:
+        metadata:
+          annotations:
+            linkerd.io/inject: disabled # Turn off Linkerd proxy injection (ignore this if you didn't learn about Linkerd)
         spec:
           containers:
           - name: rvstore-order-simulator
@@ -20,15 +24,19 @@ spec:
               value: "true"
           restartPolicy: Never
 ---
-apiVersion: batch/v1beta1
+apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: product-sync
+  namespace: rvstore
 spec:
   schedule: "*/1 * * * *"
   jobTemplate:
     spec:
       template:
+        metadata:
+          annotations:
+            linkerd.io/inject: disabled # Turn off Linkerd proxy injection (ignore this if you didn't learn about Linkerd)
         spec:
           containers:
           - name: rvstore-product-sync

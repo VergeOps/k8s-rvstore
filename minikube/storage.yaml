@@ -2,6 +2,7 @@ apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
   name: local
+  namespace: rvstore
 provisioner: local
 parameters:
   type: gp2
@@ -15,6 +16,7 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: mongo-pv-volume
+  namespace: rvstore
 spec:
   capacity:
     storage: 10Mi
@@ -38,6 +40,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: mongo-pvc
+  namespace: rvstore
 spec:
   storageClassName: local
   accessModes:
