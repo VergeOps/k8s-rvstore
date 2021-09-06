@@ -6,18 +6,17 @@
 `sudo openssl genrsa -out ~/k8s/certs/testuser.key 2048`
 ### Generate the certificate signing request:
 `sudo openssl req -new -key ~/k8s/certs/testuser.key -out ~/k8s/certs/testuser.csr -subj "/CN=testuser/O=devs"`
+### Get the Base64 encoded CSR and copy to clipboard
+`cat ~/k8s/certs/testuser.csr | base64 | tr -d "\n" | pbcopy`
+### Paste the CSR into the csr.yaml file
+Open the file csr.yaml and paste this content into the key named "request"
+Now apply the file to your cluster with `kubectl apply -f ~/k8s/certs/csr.yaml --validate=false`
 
-# From the CSR, let’s create a new certificate. On a remote cluster, you’d do this from the cluster. For this lab, we’re doing it on our workstation.
+### Approve the CSR as an administrator
+`kubectl certificate approve testuser`
 
-### Get the certificate authority certificate and key from your cluster. This is if you’re running Kubernetes for Docker Desktop.
-`sudo kubectl cp kube-apiserver-docker-desktop:run/config/pki/ca.crt -n kube-system ~/k8s/certs/ca.crt`
-
-`sudo kubectl cp kube-apiserver-docker-desktop:run/config/pki/ca.key -n kube-system ~/k8s/certs/ca.key`
-
-### Generate the certificate from the CSR
-`sudo openssl x509 -req -in ~/k8s/certs/testuser.csr -CA ~/k8s/certs/ca.crt -CAkey ~/k8s/certs/ca.key -CAcreateserial -out ~/k8s/certs/testuser.crt -days 500`
-### Inspect the new certificate
-`sudo openssl x509 -in ~/k8s/certs/testuser.crt -text -noout`
+### Retrieve the certificate from the approved CSR
+`sudo kubectl get csr testuser -o jsonpath='{.status.certificate}'| base64 -d > ~/k8s/certs/testuser.crt`
 
 # Now that we have our certificate, let’s set up Kubectl to use it.
 ### First, create a credential with the certificate
