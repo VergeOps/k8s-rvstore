@@ -9,14 +9,14 @@
 ### Get the Base64 encoded CSR and copy to clipboard
 `cat ~/k8s/certs/testuser.csr | base64 | tr -d "\n" | pbcopy`
 ### Paste the CSR into the csr.yaml file
-Open the file csr.yaml and paste this content into the key named "request"
-Now apply the file to your cluster with `kubectl apply -f ~/k8s/certs/csr.yaml --validate=false`
+Open the file csr.yaml (in the Advanced Kubernetes/rbac directory) and paste this content into the key named "request"
+Now apply the file to your cluster with `kubectl apply -f csr.yaml --validate=false`
 
 ### Approve the CSR as an administrator
 `kubectl certificate approve testuser`
 
 ### Retrieve the certificate from the approved CSR
-`sudo kubectl get csr testuser -o jsonpath='{.status.certificate}'| base64 -d > ~/k8s/certs/testuser.crt`
+`sudo kubectl get csr testuser -o jsonpath='{.status.certificate}'| base64 --decode > ~/k8s/certs/testuser.crt`
 
 # Now that we have our certificate, let’s set up Kubectl to use it.
 ### First, create a credential with the certificate
