@@ -4,27 +4,29 @@ springProfile: compose
 # Service properties
 services:
   ui:
-    replicas: 1
+    replicas: 2
     type: LoadBalancer
     resources:
       requests: 500m
       limits: 500m
   productApi:
-    replicas: 1
+    replicas: 2
     resources:
       requests: 500m
       limits: 500m
   orderApi:
-    replicas: 1
+    replicas: 2
     resources:
       requests: 500m
       limits: 500m
   gateway:
-    replicas: 1
+    replicas: 2
     type: LoadBalancer
     resources:
       requests: 500m
       limits: 700m
+  authApi:
+    replicas: 2
     
   ingress:
     type: LoadBalancer
