@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stress-deployment
+  namespace: advk8s
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: stress
+  template:
+    metadata:
+      labels:
+        app: stress
+    spec:
+      containers:
+      - name: stress
+        image: mohsenmottaghi/container-stress:latest
+        command: ["stress", "--verbose", "--vm", "1"]
