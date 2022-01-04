@@ -1,5 +1,5 @@
-apiVersion: batch/v1beta1 #for 1.20 and earlier
-#apiVersion: batch/v1 #for 1.21 and later
+#apiVersion: batch/v1beta1 #for 1.20 and earlier
+apiVersion: batch/v1 #for 1.21 and later
 kind: CronJob
 metadata:
   name: {{ .Values.services.orderSimulator.name }}
@@ -8,6 +8,9 @@ spec:
   schedule: "*/1 * * * *"
   jobTemplate:
     spec:
+      activeDeadlineSeconds: 45
+      backoffLimit: 2
+      ttlSecondsAfterFinished: 120
       template:
         spec:
           containers:
@@ -20,10 +23,10 @@ spec:
             env:
             - name: JOB
               value: "true"
-          restartPolicy: OnFailure
+          restartPolicy: Never
 ---
-apiVersion: batch/v1beta1 #for 1.20 and earlier
-#apiVersion: batch/v1 #for 1.21 and later
+#apiVersion: batch/v1beta1 #for 1.20 and earlier
+apiVersion: batch/v1 #for 1.21 and later
 kind: CronJob
 metadata:
   name: {{ .Values.services.productSync.name }}
@@ -32,6 +35,9 @@ spec:
   schedule: "*/1 * * * *"
   jobTemplate:
     spec:
+      activeDeadlineSeconds: 45
+      backoffLimit: 2
+      ttlSecondsAfterFinished: 120
       template:
         spec:
           containers:
@@ -41,4 +47,4 @@ spec:
             env:
             - name: JOB
               value: "true"
-          restartPolicy: OnFailure
+          restartPolicy: Never

@@ -7,6 +7,9 @@ spec:
   schedule: "*/1 * * * *"
   jobTemplate:
     spec:
+      activeDeadlineSeconds: 45
+      backoffLimit: 2
+      ttlSecondsAfterFinished: 120
       template:
         metadata:
           annotations:
@@ -33,6 +36,9 @@ spec:
   schedule: "*/1 * * * *"
   jobTemplate:
     spec:
+      activeDeadlineSeconds: 45
+      backoffLimit: 2
+      ttlSecondsAfterFinished: 120
       template:
         metadata:
           annotations:

@@ -57,7 +57,7 @@ services:
     replicas: 1
     image: public.ecr.aws/vergeops/rvstore-order-api
     resources:
-      requests: 100m
+      requests: 500m
       limits: 500m
   gateway:
     name: api-gateway-deployment
@@ -72,7 +72,7 @@ services:
       requests: 300m
       limits: 300m
   orderSimulator:
-    name: order-simulator-deployment
+    name: order-simulator
     image: public.ecr.aws/vergeops/rvstore-order-simulator
   productSync:
     name: rvstore-product-sync
