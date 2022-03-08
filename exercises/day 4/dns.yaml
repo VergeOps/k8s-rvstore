@@ -1,0 +1,49 @@
+# This namespace will include a service and pod
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: nginx-namespace
+---
+# This namespace will include a client pod to attempt to connect to the service in nginx-namespace
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: client-namespace
+---
+# This pod will go in nginx-namespace
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-pod
+  namespace: nginx-namespace
+  labels:
+    app: nginx
+spec:
+  containers:
+  - name: nginx-container
+    image: nginx
+---
+# This service will go in nginx-namespace
+kind: Service
+apiVersion: v1
+metadata:
+  name: nginx-service
+  namespace: nginx-namespace
+spec:
+  selector:
+    app: nginx
+  ports:
+  - protocol: TCP
+    port: 80
+---
+# This pod will go in client-namespace. We won't use it to serve nginx, but just to have a running pod that we can get in to 
+# and play with connectivity to the service in nginx-namespace
+apiVersion: v1
+kind: Pod
+metadata:
+  name: client-pod
+  namespace: client-namespace
+spec:
+  containers:
+  - name: client-container
+    image: nginx
