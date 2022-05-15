@@ -1,5 +1,5 @@
 create-cluster:
-	~/Downloads/eksctl create cluster --name rvstore --version 1.21 --managed --asg-access --profile vergeops --region us-west-2 --nodes 1 --nodes-min 1 --nodes-max 1 --nodegroup-name rvstore-workers --node-type t3.micro
+	~/Downloads/eksctl create cluster --name rvstore --version 1.21 --managed --asg-access --profile vergeops --region us-west-2 --nodes 1 --nodes-min 1 --nodes-max 1 --nodegroup-name rvstore-workers --node-type t3.small
 
 update-kubeconfig:
 	~/Downloads/eksctl utils write-kubeconfig --cluster rvstore --profile=vergeops --region=us-west-2

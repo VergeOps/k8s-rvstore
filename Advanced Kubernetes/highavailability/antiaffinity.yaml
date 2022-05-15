@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: existing-deployment
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: existing
+  template:
+    metadata:
+      labels:
+        app: existing
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+      nodeName: ip-192-168-92-61.us-west-2.compute.internal
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app1-deployment
+spec:
+  replicas: 10
+  selector:
+    matchLabels:
+      app: app1
+  template:
+    metadata:
+      labels:
+        app: app1
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - app1
+              topologyKey: kubernetes.io/hostname
