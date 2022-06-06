@@ -16,7 +16,9 @@ Now apply the file to your cluster with `kubectl apply -f csr.yaml --validate=fa
 `kubectl certificate approve testuser`
 
 ### Retrieve the certificate from the approved CSR
-`sudo kubectl get csr testuser -o jsonpath='{.status.certificate}'| base64 --decode > ~/k8s/certs/testuser.crt`
+`sudo kubectl get csr testuser -o jsonpath='{.status.certificate}'| base64 --decode > testuser.crt`
+### Copy the file
+`sudo cp testuser.crt ~/k8s/certs`
 
 # Now that we have our certificate, let’s set up Kubectl to use it.
 ### First, create a credential with the certificate
