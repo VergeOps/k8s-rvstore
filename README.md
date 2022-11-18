@@ -7,7 +7,8 @@ You'll need to install a container runtime for this course. You have a couple of
 ## Docker Desktop
 <img src="https://www.docker.com/wp-content/uploads/2022/03/horizontal-logo-monochromatic-white.png" style="padding:10px;" width="100"/>
 
-This has a potential license issue, as Docker charges larger companies a per-seat license fee. If you're unsure, check with your company management or choose the Rancher Desktop option below. With Docker Desktop, you'll get a managed Kubernetes cluster after some initial setup.
+With Docker Desktop, you'll get a managed Kubernetes cluster after some initial setup.
+**IMPORTANT**: This has a potential license issue, as Docker charges larger companies a per-seat license fee. It is free for your personal/educational use. It is free for use during class, but a license requirement applies once the class is over. If you're unsure, check with your company management or choose the Rancher Desktop option below. For more details on Docker's license and whether it applies to you at work, visit their [FAQ](https://www.docker.com/pricing/faq/#subscriptionandlicensing).
 1. Visit [docker.com](https://www.docker.com)
 1. Click the install link in the center of the page. Be careful if you're on a Mac to choose the correct chip. It defaults to Intel Macs. If you're unsure, look at the Apple menu on your computer, then `About This Mac`.
 1. Once installed, open the Docker application.
