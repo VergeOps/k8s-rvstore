@@ -1,0 +1,151 @@
+  708  history | grep kubectl
+  779  history | grep kubectl | sort +1 -u
+  780  history | grep kubectl | sort +1 -u > kubectl_commands.txt
+  735  kubectl api-resources
+  766  kubectl apply -f .
+  731  kubectl apply -f ../../exercises/day\ 4/pod.yaml 
+  435  kubectl apply -f configmap-file.yaml 
+  422  kubectl apply -f configmap.yaml 
+  400  kubectl apply -f deployment-green.yaml 
+  376  kubectl apply -f deployment-slow.yaml 
+  351  kubectl apply -f deployment.yaml 
+  716  kubectl apply -f devrole.yaml 
+  724  kubectl apply -f devrolebinding.yaml 
+  770  kubectl apply -f ingress-controller.yaml 
+  773  kubectl apply -f ingress.yaml 
+  615  kubectl apply -f logshipper.yaml 
+  630  kubectl apply -f namespace.yaml 
+  632  kubectl apply -f nginx.yaml 
+  643  kubectl apply -f persistentvolume.yaml 
+  647  kubectl apply -f persistentvolumeclaim.yaml 
+  684  kubectl apply -f persistentvolumeclaim.yaml -f persistentvolumenginx.yaml 
+  650  kubectl apply -f persistentvolumenginx.yaml 
+  311  kubectl apply -f pod.yaml 
+  416  kubectl apply -f probe-2.yaml 
+  333  kubectl apply -f replicaset.yaml 
+  443  kubectl apply -f secret.yaml 
+  319  kubectl apply -f service.yaml 
+  719  kubectl config get-contexts
+  720  kubectl config use-context docker-desktop
+  721  kubectl config use-context testuser@local
+  388  kubectl delete -f .
+  441  kubectl delete -f configmap-file.yaml 
+  434  kubectl delete -f configmap.yaml 
+  604  kubectl delete -f deployment-green.yaml 
+  603  kubectl delete -f deployment-slow.yaml 
+  607  kubectl delete -f deployment.yaml
+  374  kubectl delete -f deployment.yaml 
+  626  kubectl delete -f logshipper.yaml 
+  640  kubectl delete -f namespace.yaml 
+  638  kubectl delete -f nginx.yaml 
+  649  kubectl delete -f persistentvolume.yaml -f persistentvolumeclaim.yaml 
+  673  kubectl delete -f persistentvolumeclaim.yaml 
+  312  kubectl delete -f pod.yaml 
+  417  kubectl delete -f probe-2.yaml 
+  345  kubectl delete -f replicaset.yaml 
+  450  kubectl delete -f secret.yaml 
+  738  kubectl delete csr testuser
+  331  kubectl delete pod nginx-pod
+  332  kubectl delete pod nginx-pod-2
+  335  kubectl delete pod/nginx-rs-2lzz4 pod/nginx-rs-lw4qh pod/nginx-rs-rvxbk pod/nginx-rs-vtb2s pod/nginx-rs-zqpgb
+  336  kubectl delete pod/nginx-rs-49xkz pod/nginx-rs-bsz77 pod/nginx-rs-pp6rh pod/nginx-rs-tl2bc pod/nginx-rs-wgmf2
+  527  kubectl delete pod/nginx-rs-8v9pn pod/nginx-rs-g5rg6 pod/nginx-rs-wlbfv
+  572  kubectl delete service nginx-service-2
+  426  kubectl describe cm mongodb-config
+  406  kubectl describe endpoints nginx-service
+  776  kubectl describe ingress rvstore-ingress
+  777  kubectl describe ingress rvstore-ingress -n rvstore
+  390  kubectl describe namespace default
+  306  kubectl describe namespaces raising
+  391  kubectl describe node docker-desktop
+  303  kubectl describe node/docker-desktop
+  310  kubectl describe ns kube-system
+  616  kubectl describe pod logshipper
+  453  kubectl describe pod nginx-pod
+  651  kubectl describe pod task-pv-pod
+  324  kubectl describe pod/kube-proxy-vdp44 -n kube-system
+  690  kubectl describe pod/mongodb-deployment-7d4d6b966-z4n8d
+  423  kubectl describe pod/mongodb-deployment-848cf9ff8-m48q8
+  444  kubectl describe pod/mongodb-deployment-85958c6db5-v8zxp
+  611  kubectl describe pod/nginx-deployment-647dfdb786-26kjm
+  395  kubectl describe pod/nginx-deployment-d54cbd5cb-29tn4
+  532  kubectl describe pod/nginx-rs-4585d
+  534  kubectl describe pod/nginx-rs-5w86x
+  340  kubectl describe pod/nginx-rs-6blnt
+  342  kubectl describe pod/nginx-rs-dvnmx
+  646  kubectl describe pv task-pv-volume
+  655  kubectl describe pvc task-pv-claim
+  372  kubectl describe replicaset.apps/nginx-deployment-575b85bd8b
+  367  kubectl describe replicaset.apps/nginx-deployment-7f4797bcf9
+  566  kubectl describe replicaset.apps/nginx-deployment-9b88695cf
+  362  kubectl describe replicaset.apps/nginx-deployment-9b88695cf  
+  371  kubectl describe replicaset.apps/nginx-rs
+  744  kubectl describe role devs
+  446  kubectl describe secret mongosecret
+  732  kubectl describe service kubernetes
+  470  kubectl describe service nginx-service
+  622  kubectl exec -it pod/logshipper -c log-shipper -- bash
+  623  kubectl exec -it pod/logshipper -c log-shipper -- sh
+  691  kubectl exec -it pod/mongodb-deployment-7d4d6b966-z4n8d -- bash
+  465  kubectl exec -it pod/nginx-pod-2 -- bash
+  696  kubectl exec pod/mongodb-deployment-54bf955c8-9fr2g -- printenv
+  433  kubectl exec pod/mongodb-deployment-6bcc97dbd4-m5xgn -- printenv
+  432  kubectl exec pod/mongodb-deployment-6bcc97dbd4-m5xgn -- printnev
+  427  kubectl exec pod/mongodb-deployment-848cf9ff8-m48q8 -- printenv
+  449  kubectl exec pod/mongodb-deployment-85958c6db5-v8zxp -- printenv
+  702  kubectl exec pod/nginx-pod -- printenv
+  307  kubectl get all
+  771  kubectl get all -n ingress-nginx
+  308  kubectl get all -n kube-system
+  743  kubectl get clusterroles
+  688  kubectl get cm
+  425  kubectl get configmaps
+  718  kubectl get contexts
+  737  kubectl get csr
+  727  kubectl get deployments
+  476  kubectl get endpoints
+  774  kubectl get ingresses
+  775  kubectl get ingresses -n rvstore
+  305  kubectl get namespaces
+  301  kubectl get nodes
+  452  kubectl get pods
+  460  kubectl get pods -A
+  393  kubectl get pods -l app=nginx
+  397  kubectl get pods -l app=nginx,environment=blue
+  398  kubectl get pods -l app=nginx,environment=green
+  728  kubectl get pods -n kube-system
+  407  kubectl get pods -o wide
+  645  kubectl get pv
+  648  kubectl get pvc
+  447  kubectl get secret mongosecret -o yaml
+  445  kubectl get secrets
+  477  kubectl get services
+  730  kubectl get services -n kube-system
+  325  kubectl logs pod/kube-proxy-vdp44 -n kube-system
+  617  kubectl logs pod/logshipper
+  618  kubectl logs pod/logshipper -c log-creator
+  619  kubectl logs pod/logshipper -c log-shipper
+  620  kubectl logs pod/logshipper -c log-shipper -f
+  634  kubectl logs pod/nginx-pod
+  635  kubectl logs pod/nginx-pod -n advk8s
+  636  kubectl logs pod/nginx-pod -n advk8s -c install
+  354  kubectl rollout
+  361  kubectl rollout history deployment nginx-deployment
+  383  kubectl rollout pause deployment nginx-deployment
+  431  kubectl rollout restart deployment mongodb-deployment
+  386  kubectl rollout restart deployment nginx-deployment
+  384  kubectl rollout resume  deployment nginx-deployment
+  580  kubectl rollout resume deployment nginx-deployment
+  379  kubectl rollout status deployment nginx-deployment
+  355  kubectl rollout undo deployment nginx-deployment
+  364  kubectl rollout undo deployment nginx-deployment --to-revision=3
+  338  kubectl scale --replicas=15 replicaset.apps/nginx-rs
+  585  kubectl scale --replicas=20 deployment/nginx-deployment
+  584  kubectl scale --replicas=30 deployment/nginx-deployment
+  529  kubectl scale --replicas=5 replicaset.apps/nginx-rs
+  733  sudo kubectl get csr testuser
+  734  sudo kubectl get csr testuser -o json
+  291  watch -n .3 kubectl describe endpoints nginx-service
+  498  watch -n .3 kubectl get all
+  499  watch kubectl exec pod/nginx-pod -- ls /usr/share/nginx/html
+  497  watch kubectl get all
