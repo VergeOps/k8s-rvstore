@@ -24,7 +24,11 @@ Now apply the file to your cluster with `kubectl apply -f csr.yaml --validate=fa
 ### First, create a credential with the certificate
 `sudo kubectl config set-credentials testuser@local --client-certificate=$HOME/k8s/certs/testuser.crt --client-key=$HOME/k8s/certs/testuser.key --embed-certs=true`
 ### Set a context which will match up the cluster and your new credential
-`sudo kubectl config set-context testuser@local --cluster=docker-desktop --user=testuser@local`
+If using Docker Desktop: `sudo kubectl config set-context testuser@local --cluster=docker-desktop --user=testuser@local`
+
+If using Rancher Desktop: `sudo kubectl config set-context testuser@local --cluster=rancher-desktop --user=testuser@local`
 ### Set kubectl to use this new context
 `sudo kubectl config use-context testuser@local`
-### Now try to get some information, like pods. You should see a permission error.
+### Now try to get some information, like pods. You should see a permission error like this:
+`Error from server (Forbidden): pods is forbidden: User "testuser" cannot list resource "pods" in API group "" in the
+ namespace "default"`
