@@ -6,7 +6,7 @@
 `sudo openssl genrsa -out ~/k8s/certs/testuser.key 2048`
 ### Generate the certificate signing request:
 `sudo openssl req -new -key ~/k8s/certs/testuser.key -out ~/k8s/certs/testuser.csr -subj "/CN=testuser/O=devs"`
-### Get the Base64 encoded CSR and copy to clipboard
+### This next command gets the Base64 encoded CSR and copies it to the clipboard
 `cat ~/k8s/certs/testuser.csr | base64 | tr -d "\n" | pbcopy`
 ### Paste the CSR into the csr.yaml file
 Open the file csr.yaml (in the Advanced Kubernetes/rbac directory) and paste this content into the key named "request"
