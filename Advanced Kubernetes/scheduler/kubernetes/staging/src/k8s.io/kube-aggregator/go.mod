@@ -8,13 +8,13 @@ require (
 	github.com/davecgh/go-spew v1.1.1
 	github.com/emicklei/go-restful v0.0.0-20170410110728-ff4f55a20633
 	github.com/go-openapi/spec v0.17.2
-	github.com/gogo/protobuf v0.0.0-20171007142547-342cbe0a0415
+	github.com/gogo/protobuf v1.1.1
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
-	github.com/prometheus/client_golang v0.9.2
+	github.com/prometheus/client_golang v1.11.1
 	github.com/spf13/cobra v0.0.0-20180319062004-c439c4fa0937
 	github.com/spf13/pflag v1.0.1
-	github.com/stretchr/testify v1.2.2
-	golang.org/x/net v0.0.0-20190206173232-65e2d4e15006
+	github.com/stretchr/testify v1.4.0
+	golang.org/x/net v0.0.0-20200625001655-4c5254603344
 	k8s.io/api v0.0.0
 	k8s.io/apimachinery v0.0.0
 	k8s.io/apiserver v0.0.0
