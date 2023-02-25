@@ -18,7 +18,7 @@ require (
 	github.com/spf13/cobra v0.0.0-20180319062004-c439c4fa0937
 	github.com/spf13/pflag v1.0.1
 	github.com/stretchr/testify v1.2.2
-	golang.org/x/text v0.3.1-0.20181227161524-e6919f6577db
+	golang.org/x/text v0.3.8
 	k8s.io/api v0.0.0
 	k8s.io/apimachinery v0.0.0
 	k8s.io/client-go v0.0.0
