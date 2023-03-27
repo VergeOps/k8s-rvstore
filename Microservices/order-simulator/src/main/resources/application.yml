@@ -1,4 +1,5 @@
 com:
   vergeops:
     rvstore:
-      base-api-uri: http://localhost:9000/
+      product-api-uri: http://localhost:9001/
+      order-api-uri: http://localhost:9002/

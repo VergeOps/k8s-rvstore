@@ -1,4 +1,5 @@
 com:
   vergeops:
     rvstore:
-      base-api-uri: http://rvstore-api-gateway:9000/
+      product-api-uri: http://rvstore-product-api:9001/
+      order-api-uri: http://rvstore-order-api:9002/

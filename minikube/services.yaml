@@ -11,6 +11,7 @@ spec:
   - protocol: TCP
     port: 80
     nodePort: 30080
+    name: http
 ---
 kind: Service
 apiVersion: v1
@@ -24,6 +25,7 @@ spec:
   ports:
   - protocol: TCP
     port: 9001
+    name: http
 ---
 kind: Service
 apiVersion: v1
@@ -37,6 +39,7 @@ spec:
   ports:
   - protocol: TCP
     port: 9003
+    name: http
 ---
 kind: Service
 apiVersion: v1
@@ -50,7 +53,7 @@ spec:
   ports:
   - protocol: TCP
     port: 9002
-
+    name: http
 ---
 kind: Service
 apiVersion: v1
@@ -65,3 +68,4 @@ spec:
   - protocol: TCP
     port: 9000
     nodePort: 30090
+    name: http

@@ -17,8 +17,11 @@ import org.springframework.web.client.RestTemplate;
 @Component
 public class OrderSimulatorTask {
 
-	@Value("${com.vergeops.rvstore.base-api-uri}")
-	private String baseApiUri;
+	@Value("${com.vergeops.rvstore.product-api-uri}")
+	private String productApiUri;
+
+	@Value("${com.vergeops.rvstore.order-api-uri}")
+	private String orderApiUri;
 
 	private ProductResponse productResponse;
 	
@@ -76,7 +79,7 @@ public class OrderSimulatorTask {
 	@PostConstruct
 	private void getProducts() {
 		try {
-		ResponseEntity<ProductResponse> response = restTemplate.exchange(baseApiUri + "/products", HttpMethod.GET, null,
+		ResponseEntity<ProductResponse> response = restTemplate.exchange(productApiUri + "/products", HttpMethod.GET, null,
 				new ParameterizedTypeReference<ProductResponse>() {
 				});
 		productResponse = response.getBody();
@@ -100,8 +103,8 @@ public class OrderSimulatorTask {
 	}
 	
 	private void submitOrder(Order order) {
-		System.out.println("Submitting order to: " + baseApiUri + "orders");
-		Order createdOrder = restTemplate.postForObject(baseApiUri + "orders", order, Order.class);
+		System.out.println("Submitting order to: " + orderApiUri + "orders");
+		Order createdOrder = restTemplate.postForObject(orderApiUri + "orders", order, Order.class);
 		System.out.println(createdOrder);
 		System.out.println("Order submitted");
 	}

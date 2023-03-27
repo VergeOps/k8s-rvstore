@@ -405,7 +405,7 @@ Object(_angular_platform_browser_dynamic__WEBPACK_IMPORTED_MODULE_1__["platformB
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Users/tsolley/Google Drive/Clients/DI/Docker k8s 5 day/Microservices/ui/src/main.ts */"./src/main.ts");
+module.exports = __webpack_require__(/*! /Users/tsolley/Documents/Courseware/Microservices/ui/src/main.ts */"./src/main.ts");
 
 
 /***/ })
