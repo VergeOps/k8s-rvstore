@@ -5,6 +5,8 @@ import os
 import sys
 
 print("Starting up")
+time.sleep(10)
+print("Slept 10 seconds")
 
 s = sched.scheduler(time.time, time.sleep)
 def sync_products(sc): 
@@ -29,6 +31,11 @@ def sync_products(sc):
 
     if job == "true":
         print("This is a JOB. Exiting.")
+        try:
+            requests.post('http://localhost:15020/quitquitquit') # This will tell Istio proxy to quit (if this is running on a mesh)
+        except Exception as err:
+            print("Issue connecting to Istio proxy")
+            print(err)
     else:
         print("This is not a JOB. Continuing.")
         s.enter(60, 1, sync_products, (sc,))

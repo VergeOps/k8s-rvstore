@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ui-deployment-v2
+  namespace: rvstore
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ui
+      version: v2
+  template:
+    metadata:
+      labels:
+        app: ui
+        version: v2
+    spec:
+      containers:
+      - name: ui
+        image: public.ecr.aws/vergeops/rvstore-ui:v2
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: ui-port
+          containerPort: 80
+        livenessProbe:
+          httpGet:
+            path: /
+            port: ui-port
+        readinessProbe:
+          httpGet:
+            path: /
+            port: ui-port
+          periodSeconds: 10
+          successThreshold: 2
+          failureThreshold: 1
+        startupProbe:
+          httpGet:
+            path: /
+            port: ui-port
+          periodSeconds: 10
+          failureThreshold: 5

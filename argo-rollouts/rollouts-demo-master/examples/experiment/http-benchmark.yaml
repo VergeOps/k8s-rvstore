@@ -1,0 +1,29 @@
+# This analysis template demonstrates the use of the job metric provider.
+# It runs wrk (https://github.com/wg/wrk), an HTTP benchmarking tool, against the supplied hostname
+# and then interprets the error rate for success or failure
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  name: http-benchmark
+spec:
+  args:
+  - name: host
+  metrics:
+  - name: http-benchmark
+    failureLimit: 100
+    interval: 5s
+    provider:
+      job:
+        spec:
+          template:
+            spec:
+              containers:
+              - name: load-tester
+                image: argoproj/load-tester:latest
+                command: [sh, -xec]
+                args:
+                - |
+                  wrk -t1 -c1 -d5 -s report.lua http://{{args.host}}/color
+                  jq -e '.errors_ratio <= 0.05' report.json
+              restartPolicy: Never
+          backoffLimit: 0

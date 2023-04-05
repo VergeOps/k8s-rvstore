@@ -1,0 +1,61 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: rvstore
+  namespace: rvstore
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - rvstore-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /orders
+    route:
+    - destination:
+        host: rvstore-order-api
+        port:
+          number: 9002
+  - match:
+    - uri:
+        prefix: /auth
+    route:
+    - destination:
+        host: rvstore-auth-api
+        port:
+          number: 9003
+  - match:
+    - uri:
+        prefix: /products/_search
+    route:
+    - destination:
+        host: elasticsearch
+        port:
+          number: 9200
+  - match:
+    - uri:
+        prefix: /products/secure
+    - uri:
+        prefix: /products
+    route:
+    - destination:
+        host: rvstore-product-api
+        port:
+          number: 9001
+  - match:
+      - uri:
+          prefix: /
+    route:
+    - destination:
+        host: rvstore-ui
+        subset: v1
+        port:
+          number: 80
+      weight: 100
+    - destination:
+        host: rvstore-ui
+        subset: v2
+        port:
+          number: 80
+      weight: 0

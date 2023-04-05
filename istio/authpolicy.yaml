@@ -1,0 +1,30 @@
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: require-jwt
+  namespace: rvstore
+spec:
+  selector:
+    matchLabels:
+      app: product-api
+  action: ALLOW
+  rules:
+  - from:
+    - source:
+        requestPrincipals: ["*"]
+    - source:
+        namespaces: ["rvstore"]
+---
+apiVersion: security.istio.io/v1
+kind: RequestAuthentication
+metadata:
+  name: "jwt"
+  namespace: rvstore
+spec:
+  selector:
+    matchLabels:
+      app: product-api
+  jwtRules:
+  - issuer: "api.rvstore.com"
+    jwks: "{\"keys\": [ { \"kty\":\"oct\", \"k\":\"czgmNXJ0cmpHU3JnWSQ2VTJVY3ZVOHFiWXR6OCVRZDdZKmc4YXI5UWteaCZFbUprN2ZqJFImQlN5REQ0YlFtalA3M3pGNSNGNlBmXjYhRkBxUDVCZHBCSkVtQkFuSkQzYVJz\", \"alg\":\"HS256\"}]}"
+    forwardOriginalToken: true

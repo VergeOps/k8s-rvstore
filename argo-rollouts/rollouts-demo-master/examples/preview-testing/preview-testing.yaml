@@ -1,0 +1,77 @@
+# This rollout uses an experiment to start the new version as a preview stack, which receives no
+# production traffic, but is still internally reachable inside the cluster. While the preview is
+# running, the Experiment simultaneously starts an AnalysisRun which performs load testing via a
+# k8s Job. This job runs the 'wrk' benchmarking tool and analyzes the latency and error rate of the
+# preview stack. If the Experiment/Analysis is successful, the rollout proceeds, otherwise aborts.
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: preview-testing
+spec:
+  replicas: 5
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      app: preview-testing
+  template:
+    metadata:
+      labels:
+        app: preview-testing
+    spec:
+      containers:
+      - name: canary-demo
+        image: argoproj/rollouts-demo:green
+        imagePullPolicy: Always
+        ports:
+        - name: http
+          containerPort: 8080
+          protocol: TCP
+        readinessProbe:
+          tcpSocket:
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        resources:
+          requests:
+            memory: 32Mi
+            cpu: 5m
+  strategy:
+    canary:
+      steps:
+      - experiment:
+          duration: 60s
+          templates:
+          - name: preview
+            # specRef is a convenience reference indicating that the canary's pod spec should be used in this experiment.
+            specRef: canary
+            # The preview template's selector/labels are overwritten so that they are different
+            # than the rollout's selector, allowing it to be reached separately
+            selector:
+              matchLabels:
+                app: preview
+            metadata:
+              labels:
+                app: preview
+          # The 'load-test' AnalysisTemplate uses `wrk` to perform benchmarking. See: load-test-analysis.yaml
+          analyses:
+          - name: load-test
+            templateName: http-benchmark
+            args:
+            - name: host
+              value: preview-testing
+
+---
+# This service targets the preview stack labels (separately from the production service), so that
+# HTTP benchmarking can be performed in-cluster
+apiVersion: v1
+kind: Service
+metadata:
+  name: preview-testing
+spec:
+  ports:
+  - port: 80
+    targetPort: http
+    protocol: TCP
+    name: http
+  selector:
+    app: preview

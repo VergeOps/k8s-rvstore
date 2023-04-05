@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+	"strings"
 
 	"github.com/dgrijalva/jwt-go"
 )
@@ -16,7 +17,7 @@ type ProductResponse struct {
 
 type SecureContentResponse struct {
 	SecretInformation string `json:"secretInformation"`
-	Access string `json:"access"`
+	Access            string `json:"access"`
 }
 
 type Product struct {
@@ -36,7 +37,7 @@ type RVClaims struct {
 }
 
 type Search struct {
-    Term string `json:"term"`
+	Term string `json:"term"`
 }
 
 var products ProductResponse
@@ -78,7 +79,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 // as the arguments.
 func healthHandler(w http.ResponseWriter, r *http.Request) {
 	enableCors(&w)
-	
+
 	fmt.Fprintf(w, "UP AND RUNNING")
 }
 
@@ -92,9 +93,9 @@ func secureHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(authorization)
 		result := VerifyJwt(authorization)
 		if result {
-			secureResponse := SecureContentResponse{ 
+			secureResponse := SecureContentResponse{
 				SecretInformation: "This is protected content from a JWT protected resource!",
-				Access: "Allowed",
+				Access:            "Allowed",
 			}
 			response, err := json.Marshal(secureResponse)
 			if err != nil {
@@ -162,7 +163,11 @@ func readProductsFileFromContainer() {
 
 // VerifyJwt validates that a token is valid
 func VerifyJwt(tokenString string) bool {
-	token, err := jwt.ParseWithClaims(tokenString, &RVClaims{}, func(token *jwt.Token) (interface{}, error) {
+	fmt.Print("Incoming token: " + tokenString)
+	splitToken := strings.Split(tokenString, "Bearer ")
+	reqToken := splitToken[1]
+
+	token, err := jwt.ParseWithClaims(reqToken, &RVClaims{}, func(token *jwt.Token) (interface{}, error) {
 		return []byte("s8&5rtrjGSrgY$6U2UcvU8qbYtz8%Qd7Y*g8ar9Qk^h&EmJk7fj$R&BSyDD4bQmjP73zF5#F6Pf^6!F@qP5BdpBJEmBAnJD3aRs"), nil
 	})
 	if err != nil {

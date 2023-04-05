@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { interval } from 'rxjs';
 import { Jwt } from './jwt';
 import { Order } from './order';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -24,9 +25,20 @@ export class AppComponent implements OnInit {
   public jwt: Jwt = new Jwt();
   public secureResponse: string;
 
-  constructor(private apiService: ApiService) { }
+  constructor(private apiService: ApiService, private route: ActivatedRoute) { }
 
   ngOnInit() {
+    this.route.queryParams
+      .subscribe(params => {
+        let host = params.host;
+        let port = params.port;
+        if(host != undefined && port != undefined) {
+          this.backendUrl = "http://" + host + ":" + port;
+          this.apiService.endpoint = this.backendUrl;
+        }
+      }
+    );
+    
     const timer = interval(1000);
     timer.subscribe(n => {
       this.timeLeft = this.interval - (n % this.interval);
@@ -52,7 +64,7 @@ export class AppComponent implements OnInit {
   }
 
   getProducts() {
-    this.apiService.getProducts().subscribe(
+    this.apiService.getProducts(this.jwt.access_token).subscribe(
       products => {
         this.products = products.products;
       }
@@ -81,7 +93,7 @@ export class AppComponent implements OnInit {
 
   getOrders() {
     this.orders = [];
-    this.apiService.getOrders().subscribe(
+    this.apiService.getOrders(this.jwt.access_token).subscribe(
       response => {
         this.orders = response.orders;
       }

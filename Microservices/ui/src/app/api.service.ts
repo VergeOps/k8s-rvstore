@@ -23,12 +23,24 @@ export class ApiService {
 
   //endpoint = environment.apiEndpoint;
 
-  getProducts(): Observable<ProductResponse> {
-    return this.http.get<ProductResponse>(this.endpoint + "/products");
+  getProducts(token: string): Observable<ProductResponse> {
+    console.log("Using token: " + token);
+    let httpOptions = {
+      headers: new HttpHeaders({
+        'Authorization': 'Bearer ' + token
+      })
+    };
+    return this.http.get<ProductResponse>(this.endpoint + "/products", httpOptions);
   }
 
-  getOrders(): Observable<OrderResponse> {
-    return this.http.get<OrderResponse>(this.endpoint + "/orders");
+  getOrders(token: string): Observable<OrderResponse> {
+    console.log("Using token: " + token);
+    let httpOptions = {
+      headers: new HttpHeaders({
+        'Authorization': 'Bearer ' + token
+      })
+    };
+    return this.http.get<OrderResponse>(this.endpoint + "/orders", httpOptions);
   }
 
   login(): Observable<Jwt> {
@@ -50,7 +62,7 @@ export class ApiService {
     console.log("Using token: " + token);
     let httpOptions = {
       headers: new HttpHeaders({
-        'Authorization': token
+        'Authorization': 'Bearer ' + token
       })
     };
     return this.http.get<string>(this.endpoint + "/products/secure", httpOptions);

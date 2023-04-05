@@ -56,11 +56,23 @@ var ApiService = /** @class */ (function () {
         }
     }
     //endpoint = environment.apiEndpoint;
-    ApiService.prototype.getProducts = function () {
-        return this.http.get(this.endpoint + "/products");
+    ApiService.prototype.getProducts = function (token) {
+        console.log("Using token: " + token);
+        var httpOptions = {
+            headers: new _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpHeaders"]({
+                'Authorization': 'Bearer ' + token
+            })
+        };
+        return this.http.get(this.endpoint + "/products", httpOptions);
     };
-    ApiService.prototype.getOrders = function () {
-        return this.http.get(this.endpoint + "/orders");
+    ApiService.prototype.getOrders = function (token) {
+        console.log("Using token: " + token);
+        var httpOptions = {
+            headers: new _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpHeaders"]({
+                'Authorization': 'Bearer ' + token
+            })
+        };
+        return this.http.get(this.endpoint + "/orders", httpOptions);
     };
     ApiService.prototype.login = function () {
         return this.http.get(this.endpoint + "/auth/login");
@@ -79,7 +91,7 @@ var ApiService = /** @class */ (function () {
         console.log("Using token: " + token);
         var httpOptions = {
             headers: new _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpHeaders"]({
-                'Authorization': token
+                'Authorization': 'Bearer ' + token
             })
         };
         return this.http.get(this.endpoint + "/products/secure", httpOptions);
@@ -168,6 +180,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _api_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./api.service */ "./src/app/api.service.ts");
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
 /* harmony import */ var _jwt__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./jwt */ "./src/app/jwt.ts");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -181,9 +194,11 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
 var AppComponent = /** @class */ (function () {
-    function AppComponent(apiService) {
+    function AppComponent(apiService, route) {
         this.apiService = apiService;
+        this.route = route;
         this.products = [];
         this.searchedProducts = [];
         this.orders = [];
@@ -193,6 +208,15 @@ var AppComponent = /** @class */ (function () {
     }
     AppComponent.prototype.ngOnInit = function () {
         var _this = this;
+        this.route.queryParams
+            .subscribe(function (params) {
+            var host = params.host;
+            var port = params.port;
+            if (host != undefined && port != undefined) {
+                _this.backendUrl = "http://" + host + ":" + port;
+                _this.apiService.endpoint = _this.backendUrl;
+            }
+        });
         var timer = Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["interval"])(1000);
         timer.subscribe(function (n) {
             _this.timeLeft = _this.interval - (n % _this.interval);
@@ -215,7 +239,7 @@ var AppComponent = /** @class */ (function () {
     };
     AppComponent.prototype.getProducts = function () {
         var _this = this;
-        this.apiService.getProducts().subscribe(function (products) {
+        this.apiService.getProducts(this.jwt.access_token).subscribe(function (products) {
             _this.products = products.products;
         });
     };
@@ -237,7 +261,7 @@ var AppComponent = /** @class */ (function () {
     AppComponent.prototype.getOrders = function () {
         var _this = this;
         this.orders = [];
-        this.apiService.getOrders().subscribe(function (response) {
+        this.apiService.getOrders(this.jwt.access_token).subscribe(function (response) {
             _this.orders = response.orders;
         });
     };
@@ -258,7 +282,7 @@ var AppComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./app.component.html */ "./src/app/app.component.html"),
             styles: [__webpack_require__(/*! ./app.component.less */ "./src/app/app.component.less")]
         }),
-        __metadata("design:paramtypes", [_api_service__WEBPACK_IMPORTED_MODULE_1__["ApiService"]])
+        __metadata("design:paramtypes", [_api_service__WEBPACK_IMPORTED_MODULE_1__["ApiService"], _angular_router__WEBPACK_IMPORTED_MODULE_4__["ActivatedRoute"]])
     ], AppComponent);
     return AppComponent;
 }());
