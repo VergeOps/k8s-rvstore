@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: kafka-client
+spec:
+  containers:
+  - name: client-container
+    image: wurstmeister/kafka
+    command: [ "/bin/bash", "-c", "--" ]
+    args: [ "while true; do sleep 30; done;" ]
+    env:
+    - name: HOST_IP
+      value: rvstore-kafka

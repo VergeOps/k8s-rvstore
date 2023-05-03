@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: orders-mongodb
+  namespace: rvstore
+spec:
+  replicas: 1
+  serviceName: orders-mongodb
+  selector:
+    matchLabels:
+      app: order-mongodb
+  template:
+    metadata:
+      labels:
+        app: order-mongodb
+    spec:
+      containers:
+      - name: rvstore-orders-mongodb
+        image: public.ecr.aws/vergeops/rvstore-mongo
+        imagePullPolicy: IfNotPresent
+        envFrom:
+        - secretRef:
+            name: mongodb-secret
+        #volumeMounts:
+        #- mountPath: /data/db
+        #  name: mongo-volume
+        ports:
+        - containerPort: 27017
+      #volumes:
+      #- name: mongo-volume
+      #  persistentVolumeClaim:
+      #    claimName: mongo-pvc
+         
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: rvstore-orders-mongodb
+  namespace: rvstore
+spec:
+  type: ClusterIP
+  selector:
+    app: order-mongodb
+  ports:
+  - protocol: TCP
+    port: 27017

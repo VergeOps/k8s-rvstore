@@ -1,0 +1,11 @@
+components:
+  frontendProxy:
+    service:
+      type: NodePort
+  frontend:
+    env:
+      - name: PUBLIC_OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
+        value: http://localhost:31001/v1/traces
+opentelemetry-collector:
+  service:
+    type: NodePort
