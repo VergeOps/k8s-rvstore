@@ -71,8 +71,8 @@ export class AppComponent implements OnInit {
     );
   }
 
-  login() {
-    this.apiService.login().subscribe(
+  login(admin: boolean) {
+    this.apiService.login(admin).subscribe(
       jwt => {
         this.jwt = jwt;
       }

@@ -1,3 +1,34 @@
+### Set up request authentication so that a valid JWT is needed to access protected resources
+apiVersion: security.istio.io/v1
+kind: RequestAuthentication
+metadata:
+  name: jwt
+  namespace: rvstore
+spec:
+  selector:
+    matchLabels:
+      app: product-api
+  jwtRules:
+  - issuer: "api.rvstore.com"
+    jwks: "{\"keys\": [ { \"kty\":\"oct\", \"k\":\"czgmNXJ0cmpHU3JnWSQ2VTJVY3ZVOHFiWXR6OCVRZDdZKmc4YXI5UWteaCZFbUprN2ZqJFImQlN5REQ0YlFtalA3M3pGNSNGNlBmXjYhRkBxUDVCZHBCSkVtQkFuSkQzYVJz\", \"alg\":\"HS256\"}]}"
+    forwardOriginalToken: true
+---
+### Set up request authentication so that a valid JWT is needed to access protected resources
+apiVersion: security.istio.io/v1
+kind: RequestAuthentication
+metadata:
+  name: jwt-orders
+  namespace: rvstore
+spec:
+  selector:
+    matchLabels:
+      app: order-api
+  jwtRules:
+  - issuer: "api.rvstore.com"
+    jwks: "{\"keys\": [ { \"kty\":\"oct\", \"k\":\"czgmNXJ0cmpHU3JnWSQ2VTJVY3ZVOHFiWXR6OCVRZDdZKmc4YXI5UWteaCZFbUprN2ZqJFImQlN5REQ0YlFtalA3M3pGNSNGNlBmXjYhRkBxUDVCZHBCSkVtQkFuSkQzYVJz\", \"alg\":\"HS256\"}]}"
+    forwardOriginalToken: true
+---
+### This auth policy will protect the products from being viewed unless the user has logged in with a valid JWT
 apiVersion: security.istio.io/v1
 kind: AuthorizationPolicy
 metadata:
@@ -15,16 +46,24 @@ spec:
     - source:
         namespaces: ["rvstore"]
 ---
+### This auth policy will protect the orders from being viewed unless the user has logged in with a valid JWT AND has the admin claim
 apiVersion: security.istio.io/v1
-kind: RequestAuthentication
+kind: AuthorizationPolicy
 metadata:
-  name: "jwt"
+  name: require-jwt-admin
   namespace: rvstore
 spec:
   selector:
     matchLabels:
-      app: product-api
-  jwtRules:
-  - issuer: "api.rvstore.com"
-    jwks: "{\"keys\": [ { \"kty\":\"oct\", \"k\":\"czgmNXJ0cmpHU3JnWSQ2VTJVY3ZVOHFiWXR6OCVRZDdZKmc4YXI5UWteaCZFbUprN2ZqJFImQlN5REQ0YlFtalA3M3pGNSNGNlBmXjYhRkBxUDVCZHBCSkVtQkFuSkQzYVJz\", \"alg\":\"HS256\"}]}"
-    forwardOriginalToken: true
+      app: order-api
+  action: ALLOW
+  rules:
+  - from: # Allow access to users with a valid JWT and the read:orders permission claim
+    - source:
+        requestPrincipals: ["*"]
+    when:
+    - key: request.auth.claims[permissions]
+      values: [read:orders]
+  - from: # Allow access to other workloads in the rvstore namespace (ie the order simulator)
+    - source:
+        namespaces: ["rvstore"]

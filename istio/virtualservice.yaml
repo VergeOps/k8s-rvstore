@@ -7,7 +7,7 @@ spec:
   hosts:
   - "*"
   gateways:
-  - rvstore-gateway
+  - rvstore-ingress-gateway
   http:
   - match:
     - uri:

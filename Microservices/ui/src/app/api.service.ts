@@ -43,8 +43,12 @@ export class ApiService {
     return this.http.get<OrderResponse>(this.endpoint + "/orders", httpOptions);
   }
 
-  login(): Observable<Jwt> {
-    return this.http.get<Jwt>(this.endpoint + "/auth/login");
+  login(admin: boolean): Observable<Jwt> {
+    if(admin) {
+      return this.http.get<Jwt>(this.endpoint + "/auth/login/admin");
+    } else {
+      return this.http.get<Jwt>(this.endpoint + "/auth/login");
+    }
   }
 
   searchProducts(query: SearchQuery): Observable<SearchResult> {

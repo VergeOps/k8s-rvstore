@@ -95,7 +95,9 @@
     <div class="card-body">
       <p>The login button sends a request to the auth API and retrieves a JWT. The JWT is displayed on screen below the
         button.</p>
-      <div><button class="btn btn-primary" (click)="login()">Login</button>
+      <div>
+        <div><button class="btn btn-primary" (click)="login(false)">Login</button></div>
+        <div><button class="btn btn-primary" (click)="login(true)">Login as Admin</button></div>
         <div *ngIf="jwt">
           <strong>JWT:</strong> <span class="badge badge-pill badge-primary">{{jwt.access_token}}</span>
           </div>
