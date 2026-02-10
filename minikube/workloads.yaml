@@ -4,7 +4,7 @@ metadata:
   name: ui-deployment
   namespace: rvstore
 spec:
-  replicas: 1
+  replicas: 5
   selector:
     matchLabels:
       app: ui
